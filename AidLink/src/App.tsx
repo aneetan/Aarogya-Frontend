@@ -4,7 +4,7 @@ function App() {
 
   return (
     <>
-      <h1 className='font-semibold text-red-600'> Hello from React + TS with Tailwind</h1>
+      <h1 className='font-semibold text-green-600'> Hello from React + TS with Tailwind</h1>
     </>
   )
 }
