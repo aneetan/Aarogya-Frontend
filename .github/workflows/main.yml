@@ -2,14 +2,14 @@ name: Build and Deploy
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./AidLink
+        working-directory: ./aidlink
 
     steps:
       - uses: actions/checkout@v4
@@ -18,6 +18,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
@@ -29,5 +30,5 @@ jobs:
         uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          working-directory: ./AidLink
-          vercel-args: '--prod'
+          working-directory: ./aidlink
+          vercel-args: '--prod --yes'  # Critical: Added --yes flag
