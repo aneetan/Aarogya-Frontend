@@ -1,11 +1,19 @@
+import { BrowserRouter, Route, Routes } from 'react-router'
 import './App.css'
+import Homepage from './pages/Homepage'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 function App() {
-
+  const queryClient = new QueryClient();
   return (
     <>
-      <h1 className='font-semibold text-green-600'> Hello from React + TS with Tailwind</h1>
-      <p className='text-green-400'> This is green </p>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<Homepage/>}/>
+          </Routes>
+        </BrowserRouter>
+      </QueryClientProvider>
     </>
   )
 }
