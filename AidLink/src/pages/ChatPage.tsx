@@ -133,10 +133,6 @@ const AidLinkChat: React.FC = () => {
   return (
     <div className="flex h-screen bg-gray-100">
       {/* Sidebar */}
-      <ChatHistory
-        history={chatHistory}
-        onNewChat={startNewChat}
-      />
       
       <div className="flex-1 flex flex-col">        
         {/* Chat messages container */}
