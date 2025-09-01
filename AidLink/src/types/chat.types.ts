@@ -16,3 +16,24 @@ export interface ApiError {
   status?: number;
   code?: string;
 }
+
+export interface Message {
+  id: string;
+  text: string;
+  sender: 'user' | 'bot';
+  timestamp: Date;
+  isFirstAidStep?: boolean;
+}
+
+export interface ChatHistoryProps {
+  id: string;
+  title: string;
+  timestamp: Date;
+  preview: string;
+}
+
+export interface SuggestedQuestion {
+  id: string;
+  text: string;
+  category: string;
+}
