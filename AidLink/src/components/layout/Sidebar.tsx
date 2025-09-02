@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 import { FaTimes } from "react-icons/fa";
-import ChatHistory from "../chat/ChatHistory";
 
 interface SidebarProps {
     isOpen: boolean;

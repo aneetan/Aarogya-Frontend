@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router';
 import ChatHeader from './ChatHeader';
-import ChatSidebar from './ChatSidebar';
+import ChatSidebar from './Sidebar';
 
 
 const ChatLayout= () => {
