@@ -8,6 +8,7 @@ import type { ApiError, ChatResponse, MessageProps } from "../../../types/chat.t
 import { getChatResponse } from "../../../api/chat.api";
 import ChatThinking from "../ChatThinking";
 import ChatMessage from "../ChatMessage";
+import { formatChatResponse } from "../../../helpers/formatChatResponse";
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<MessageProps[]>([
@@ -29,9 +30,10 @@ export default function ChatInterface() {
       },
       onSuccess: (data) => {
          // Add bot response when successful
+         const formatted = formatChatResponse(data.response);
          setMessages(prev => [
          ...prev, 
-         { text: data.response, isUser: false }
+         { text: formatted, isUser: false }
          ]);
          setIsAiTyping(false);
       },

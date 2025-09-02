@@ -1,7 +1,6 @@
 import { TypeAnimation } from "react-type-animation";
 import type { MessageProps } from "../../types/chat.types";
 import Logo from "../Logo";
-import FormattedResponse, { formatMedicalResponse } from "./FormattedResponse";
 
 interface ChatMessageProps {
    messages: MessageProps[];
