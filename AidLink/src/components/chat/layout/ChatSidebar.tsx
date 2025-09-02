@@ -8,10 +8,10 @@ interface ChatSidebarProps {
 
 const ChatSidebar: React.FC<ChatSidebarProps> = ({onClose}) => {
   const [expanded, setExpanded] = useState(false);
-  const [activeItem, setActiveItem] = useState("Home");
+  const [activeItem, setActiveItem] = useState("");
   
   const navigationItems = [
-    { icon: FaHome, label: "Home" },
+    { icon: FaHome, label: " Go to Home" },
 
   ];
 

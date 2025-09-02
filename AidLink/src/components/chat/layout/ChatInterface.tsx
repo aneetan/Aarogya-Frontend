@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaMicrophone } from "react-icons/fa";
+import { FaMicrophone, FaTimes } from "react-icons/fa";
 import Logo from "../../Logo";
 import { IoIosSend } from "react-icons/io";
 
@@ -23,6 +23,13 @@ export default function ChatInterface() {
 
   return (
     <div className="flex h-full flex-col bg-gray-50">
+      <div className="absolute right-6 top-4">
+         <button 
+         className="p-1 cursor-pointer rounded-full hover:text-[var(--primary-color)] transition-colors"
+         >
+            <FaTimes className="w-5 h-5"/>
+         </button>
+      </div>
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
         {/* Assistant Avatar */}
