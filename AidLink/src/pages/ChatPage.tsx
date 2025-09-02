@@ -24,6 +24,12 @@ const ChatPage = () => {
       )}
       
       <main className="flex-1 min-w-0 relative">
+        <button
+          className="lg:hidden fixed top-4 left-4 z-10 p-2 rounded-md bg-[#be1724] text-white"
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+        >
+          {sidebarOpen ? '✕' : '☰'}
+        </button>
         <ChatInterface />
       </main>
     </div>

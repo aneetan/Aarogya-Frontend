@@ -11,6 +11,11 @@ export interface ChatRequest {
   message: string;
 }
 
+export interface MessageProps {
+  text: string;
+  isUser: boolean;
+}
+
 export interface ApiError {
   message: string;
   status?: number;

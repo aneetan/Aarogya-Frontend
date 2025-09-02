@@ -7,11 +7,11 @@ interface ChatSidebarProps {
 }
 
 const ChatSidebar: React.FC<ChatSidebarProps> = ({onClose}) => {
-  const [expanded, setExpanded] = useState(false);
-  const [activeItem, setActiveItem] = useState("");
+  const [expanded, setExpanded] = useState(true);
+  const [activeItem, setActiveItem] = useState("Home");
   
   const navigationItems = [
-    { icon: FaHome, label: " Go to Home" },
+    { icon: FaHome, label: "Go to Home" },
 
   ];
 
@@ -24,7 +24,7 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({onClose}) => {
   };
 
   return (
-    <div className={`flex h-full flex-col bg-white text-[var(--primary-color)] transition-all duration-300 ${expanded ? 'w-64' : 'w-16 sm:w-20'}`}>
+    <div className={`flex h-full flex-col bg-white text-[var(--primary-color)] transition-all duration-300 ${expanded ? 'w-64' : 'w-64 sm:w-20'}`}>
       {/* Logo/Brand */}
       <div className="lg:hidden absolute top-2 right-2">
         <button 
