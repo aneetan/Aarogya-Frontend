@@ -12,9 +12,8 @@ export interface ChatRequest {
 }
 
 export interface MessageProps {
-  text: string;
+  text: string | MedicalResponse;
   isUser: boolean;
-  
 }
 
 export interface ApiError {
@@ -42,4 +41,19 @@ export interface SuggestedQuestion {
   id: string;
   text: string;
   category: string;
+}
+
+export interface MedicalResponse {
+  title: string;
+  overview?: string;
+  warnings: string[];
+  steps: StepProps[];
+  additionalNotes?: string[];
+  emergencyAction?: string;
+}
+
+export interface StepProps{
+   step_number: number;
+   instruction: string;
+   details: string;
 }

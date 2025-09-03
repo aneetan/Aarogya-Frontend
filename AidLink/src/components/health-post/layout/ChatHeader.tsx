@@ -1,4 +1,4 @@
-import ProfileDropdown from "../ProfileDropdown";
+import ProfileDropdown from "../../ProfileDropdown";
 
 interface NavbarProps{
     onClick: () => void;

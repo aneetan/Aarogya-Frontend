@@ -8,7 +8,6 @@ import type { ApiError, ChatResponse, MessageProps } from "../../../types/chat.t
 import { getChatResponse } from "../../../api/chat.api";
 import ChatThinking from "../ChatThinking";
 import ChatMessage from "../ChatMessage";
-import { formatChatResponse } from "../../../helpers/formatChatResponse";
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<MessageProps[]>([
@@ -30,7 +29,7 @@ export default function ChatInterface() {
       },
       onSuccess: (data) => {
          // Add bot response when successful
-         const formatted = formatChatResponse(data.response);
+         const formatted = data.response;
          setMessages(prev => [
          ...prev, 
          { text: formatted, isUser: false }
@@ -58,10 +57,6 @@ export default function ChatInterface() {
       chatMutation.mutate(inputMessage.trim());
       setInputMessage("");
    }
-  };
-
-  const handleTypingComplete = () => {
-    setIsAiTyping(false);
   };
 
    const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -116,7 +111,6 @@ export default function ChatInterface() {
             <ChatMessage 
               messages={messages} 
               isTyping={isAiTyping}
-              onTypingComplete={handleTypingComplete}
             />
             
             {chatMutation.isPending && (

@@ -1,20 +1,45 @@
-export function formatChatResponse(text: string): string {
-  if (!text) return '';
+// helpers/responseFormatter.helper.ts
+
+import type { MedicalResponse } from "../types/chat.types";
+
+export function formatMedicalResponse(response: MedicalResponse): string {
+  let formattedText = `**${response.title}**\n\n`;
   
-  let formatted = text;
+  if (response.overview) {
+    formattedText += `${response.overview}\n\n`;
+  }
   
-  // Add proper spacing after section headers
-  formatted = formatted.replace(/(WARNINGS|STEPS|ADDITIONAL NOTES):/gi, '\n\n$1:\n\n');
+  if (response.warnings && response.warnings.length > 0) {
+    formattedText += `⚠️ **WARNINGS:**\n`;
+    response.warnings.forEach(warning => {
+      formattedText += `• ${warning}\n`;
+    });
+    formattedText += '\n';
+  }
   
-  // Ensure proper spacing for step numbers
-  formatted = formatted.replace(/(\d+)\.\s+/g, '\n\n$1. ');
+  if (response.steps && response.steps.length > 0) {
+    formattedText += `📋 **STEPS:**\n`;
+    response.steps.forEach(step => {
+      formattedText += `${step.step_number}. ${step.instruction}`;
+      if (step.details) {
+        formattedText += ` - ${step.details}`;
+      }
+      formattedText += '\n';
+    });
+    formattedText += '\n';
+  }
   
-  // Add spacing between sentences (after periods that are not in abbreviations)
-  formatted = formatted.replace(/([.!?])\s+([A-Z])/g, '$1\n\n$2');
+  if (response.additionalNotes && response.additionalNotes.length > 0) {
+    formattedText += `💡 **ADDITIONAL NOTES:**\n`;
+    response.additionalNotes.forEach(note => {
+      formattedText += `• ${note}\n`;
+    });
+    formattedText += '\n';
+  }
   
-  // Clean up any excessive newlines
-  formatted = formatted.replace(/\n{3,}/g, '\n\n');
+  if (response.emergencyAction) {
+    formattedText += `🚨 **EMERGENCY ACTION:**\n${response.emergencyAction}\n`;
+  }
   
-  // Trim and ensure it starts clean
-  return formatted.trim();
+  return formattedText;
 }

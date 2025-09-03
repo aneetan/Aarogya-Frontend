@@ -1,14 +1,16 @@
-import { TypeAnimation } from "react-type-animation";
-import type { MessageProps } from "../../types/chat.types";
+import type { MedicalResponse, MessageProps } from "../../types/chat.types";
 import Logo from "../Logo";
+import StructuredResponse from "./StructuredResponse";
 
 interface ChatMessageProps {
    messages: MessageProps[];
    isTyping?: boolean;
-   onTypingComplete?: () => void;
 }
 
-const ChatMessage: React.FC<ChatMessageProps> = ({ messages, onTypingComplete }) => {
+const ChatMessage: React.FC<ChatMessageProps> = ({ messages }) => {
+  const isStructuredResponse = (text: string | MedicalResponse): text is MedicalResponse => {
+    return typeof text === 'object' && text !== null && 'title' in text && 'steps' in text;
+  };
 
   return (
     <div className="space-y-3 ">
@@ -30,25 +32,15 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ messages, onTypingComplete })
                 : 'bg-gray-200 text-gray-800 rounded-bl-sm'
             }`}
           >
-            {!message.isUser? (
-                <TypeAnimation
-                  sequence={[
-                    message.text,
-                    () => {
-                      if (onTypingComplete) {
-                        onTypingComplete();
-                      }
-                    }
-                  ]}
-                  wrapper="span"
-                  speed={80}
-                  style={{ fontSize: '1em', display: 'inline-block' }}
-                  repeat={0}
-                  cursor={false}
-                />
+            {message.isUser ? (
+              <p>{message.text as string}</p>
+            ) : (
+              isStructuredResponse(message.text) ?(
+                <StructuredResponse response={message.text}/>
               ) : (
-                message.text
-              )}
+              <p>{message.text as string}</p>
+              )
+            )}
           </div>
         </div>
       ))}
