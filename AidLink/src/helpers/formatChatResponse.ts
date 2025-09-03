@@ -1,45 +1,65 @@
-// helpers/responseFormatter.helper.ts
+import type { MedicalResponse, StepProps } from "../types/chat.types";
 
-import type { MedicalResponse } from "../types/chat.types";
-
-export function formatMedicalResponse(response: MedicalResponse): string {
-  let formattedText = `**${response.title}**\n\n`;
+export const formatFirstAidResponse = (response: MedicalResponse | string): string => {
+  if (typeof response === 'string') {
+    return response;
+  }
   
+  // If it doesn't have the expected structure, return a stringified version
+  if (!response || typeof response !== 'object') {
+    return typeof response === 'object' ? JSON.stringify(response) : String(response);
+  }
+  
+  let formattedText = '';
+  
+  // Add title if available
+  if (response.title) {
+    formattedText += `${response.title}. `;
+  }
+  
+  // Add overview if available
   if (response.overview) {
-    formattedText += `${response.overview}\n\n`;
+    formattedText += `${response.overview} `;
   }
   
+  // Add warnings if available
   if (response.warnings && response.warnings.length > 0) {
-    formattedText += `⚠️ **WARNINGS:**\n`;
-    response.warnings.forEach(warning => {
-      formattedText += `• ${warning}\n`;
+    formattedText += 'Important warnings: ';
+    response.warnings.forEach((warning: string) => {
+      formattedText += `${warning}. `;
     });
-    formattedText += '\n';
   }
   
+  // Add steps if available
   if (response.steps && response.steps.length > 0) {
-    formattedText += `📋 **STEPS:**\n`;
-    response.steps.forEach(step => {
-      formattedText += `${step.step_number}. ${step.instruction}`;
-      if (step.details) {
-        formattedText += ` - ${step.details}`;
+    formattedText += 'Follow these steps: ';
+    response.steps.forEach((step: StepProps, index: number) => {
+      if (step.instruction) {
+        formattedText += `Step ${step.step_number || index + 1}: ${step.instruction}. `;
+        if (step.details) {
+          formattedText += `${step.details}. `;
+        }
       }
-      formattedText += '\n';
     });
-    formattedText += '\n';
   }
   
+  // Add additional notes if available
   if (response.additionalNotes && response.additionalNotes.length > 0) {
-    formattedText += `💡 **ADDITIONAL NOTES:**\n`;
-    response.additionalNotes.forEach(note => {
-      formattedText += `• ${note}\n`;
+    formattedText += 'Additional notes: ';
+    response.additionalNotes.forEach((note: string) => {
+      formattedText += `${note}. `;
     });
-    formattedText += '\n';
   }
   
+  // Add emergency action if available
   if (response.emergencyAction) {
-    formattedText += `🚨 **EMERGENCY ACTION:**\n${response.emergencyAction}\n`;
+    formattedText += `Emergency action: ${response.emergencyAction}. `;
+  }
+  
+  // If we couldn't extract any meaningful text, fall back to stringify
+  if (formattedText.trim() === '') {
+    return 'I have first aid information for you. Please view the detailed instructions on screen.';
   }
   
   return formattedText;
-}
+};
