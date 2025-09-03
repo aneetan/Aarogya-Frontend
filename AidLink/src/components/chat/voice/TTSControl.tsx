@@ -34,17 +34,17 @@ const TTSControl: React.FC<TTSControlProps> = ({isTTSEnabled, toggleTTS, isDisab
           <button
             onClick={handleClick}
             disabled={isDisabled}
-            className={`h-12 w-12 flex items-center justify-center rounded-full transition-all duration-300 ${
+            className={`h-8 w-8 flex items-center justify-center rounded-full transition-all duration-300 ${
                isTTSEnabled 
-                  ? 'bg-blue-500 text-white' 
-                  : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
+                  ? ' bg-red-500 text-gray-100' 
+                  : 'text-gray-700 border border-gray-300 hover:bg-gray-50'
             } ${isDisabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
             title={isTTSEnabled ? "Mute responses" : "Enable voice responses"}
             >
             {isTTSEnabled ? (
-               <FaVolumeUp className="h-6 w-6" />
+               <FaVolumeUp className="h-4 w-4" />
             ) : (
-               <FaVolumeMute className="h-6 w-6" />
+               <FaVolumeMute className="h-4 w-4" />
             )}
             </button>
        </div>

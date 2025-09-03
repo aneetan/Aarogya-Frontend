@@ -5,6 +5,9 @@ export const useTextToSpeech = () => {
 
    const speakText = (text: string) => {
       if(!isTTSEnabled || !('speechSynthesis' in window)) return;
+
+      const textToSpeak = typeof text === 'string' ? text : String(text);
+
       // Cancel any ongoing speech
       window.speechSynthesis.cancel();
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import Logo from "../Logo";
 import { IoIosSend } from "react-icons/io";
@@ -12,6 +12,7 @@ import { useTextToSpeech } from "../../hooks/useTextToSpeech";
 import { useSpeechRecognitionHook } from "../../hooks/useSpeechRecognitionHook";
 import TTSControl from "./voice/TTSControl";
 import VoiceControl from "./voice/VoiceControl";
+import { formatFirstAidResponse } from "../../helpers/formatChatResponse";
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<MessageProps[]>([
@@ -22,16 +23,6 @@ export default function ChatInterface() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-
-  const {
-    transcript, 
-    isListening, 
-    browserSupportsSpeechRecognition, 
-    toggleListening, 
-    resetTranscript 
-  } = useSpeechRecognitionHook();
-
-   const { isTTSEnabled, speakText, toggleTTS } = useTextToSpeech();
 
   const chatMutation = useMutation<ChatResponse, ApiError, string>({
       mutationFn: getChatResponse,
@@ -49,7 +40,7 @@ export default function ChatInterface() {
          ]);
 
         if (isTTSEnabled) {
-          speakText(formatted);
+          speakText(formatFirstAidResponse(data.response));
         }
         setIsAiTyping(false);
       },
@@ -63,11 +54,27 @@ export default function ChatInterface() {
           setIsAiTyping(false);
         },
    });
+
+  const handleAutoSend = useCallback(() => {
+    if (inputMessage.trim() && !chatMutation.isPending) {
+      handleSendMessage();
+    }
+  }, [inputMessage, chatMutation.isPending]);
+
+  const {
+    transcript, 
+    isListening, 
+    browserSupportsSpeechRecognition, 
+    toggleListening, 
+    resetTranscript 
+  } = useSpeechRecognitionHook(handleAutoSend);
+
+  const { isTTSEnabled, speakText, toggleTTS } = useTextToSpeech();
  
-    // Auto-scroll to bottom when messages change
-   useEffect(() => {
-      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-   }, [messages]);
+  // Auto-scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   // Update input message when speech recognition transcript changes
   useEffect(() => {
@@ -109,17 +116,19 @@ export default function ChatInterface() {
   return (
     <div className="flex flex-col h-screen bg-gray-50 overflow-hidden">
       <div className="absolute right-6 top-4 z-10">
-         <TTSControl
-          isTTSEnabled={isTTSEnabled}
-          toggleTTS={toggleTTS}
-          isDisabled={chatMutation.isPending || isAiTyping}
-        />
-         <button 
-            onClick={() => navigate('/')}
-            className="p-1 cursor-pointer rounded-full hover:text-[var(--primary-color)] transition-colors"
-         >
-            <FaTimes className="w-5 h-5"/>
-         </button>
+        <div className="flex gap-2">
+          <TTSControl
+            isTTSEnabled={isTTSEnabled}
+            toggleTTS={toggleTTS}
+            isDisabled={chatMutation.isPending || isAiTyping}
+          />
+          <button 
+              onClick={() => navigate('/')}
+              className="p-1 cursor-pointer rounded-full hover:text-[var(--primary-color)] transition-colors"
+          >
+              <FaTimes className="w-5 h-5"/>
+          </button>
+         </div>
       </div>
       
       {/* Main Chat Area*/}
