@@ -115,6 +115,7 @@ export default function ChatInterface() {
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 overflow-hidden">
+      
       <div className="absolute right-6 top-4 z-10">
         <div className="flex gap-2">
           <TTSControl
