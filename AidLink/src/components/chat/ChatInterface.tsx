@@ -1,13 +1,17 @@
 import { useEffect, useRef, useState } from "react";
-import { FaMicrophone, FaTimes } from "react-icons/fa";
-import Logo from "../../Logo";
+import { FaTimes } from "react-icons/fa";
+import Logo from "../Logo";
 import { IoIosSend } from "react-icons/io";
 import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
-import type { ApiError, ChatResponse, MessageProps } from "../../../types/chat.types";
-import { getChatResponse } from "../../../api/chat.api";
-import ChatThinking from "../ChatThinking";
-import ChatMessage from "../ChatMessage";
+import type { ApiError, ChatResponse, MessageProps } from "../../types/chat.types";
+import { getChatResponse } from "../../api/chat.api";
+import ChatThinking from "./ChatThinking";
+import ChatMessage from "./ChatMessage";
+import { useTextToSpeech } from "../../hooks/useTextToSpeech";
+import { useSpeechRecognitionHook } from "../../hooks/useSpeechRecognitionHook";
+import TTSControl from "./voice/TTSControl";
+import VoiceControl from "./voice/VoiceControl";
 
 export default function ChatInterface() {
   const [messages, setMessages] = useState<MessageProps[]>([
@@ -15,10 +19,19 @@ export default function ChatInterface() {
   ]); 
   const [inputMessage, setInputMessage] = useState('');
   const [isAiTyping, setIsAiTyping] = useState(false);
-  const [isListening, setIsListening] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+
+  const {
+    transcript, 
+    isListening, 
+    browserSupportsSpeechRecognition, 
+    toggleListening, 
+    resetTranscript 
+  } = useSpeechRecognitionHook();
+
+   const { isTTSEnabled, speakText, toggleTTS } = useTextToSpeech();
 
   const chatMutation = useMutation<ChatResponse, ApiError, string>({
       mutationFn: getChatResponse,
@@ -34,16 +47,20 @@ export default function ChatInterface() {
          ...prev, 
          { text: formatted, isUser: false }
          ]);
-         setIsAiTyping(false);
+
+        if (isTTSEnabled) {
+          speakText(formatted);
+        }
+        setIsAiTyping(false);
       },
       onError: (error) => {
          console.error('Chat mutation error:', error);
-         
-         // Add error message
          setMessages(prev => [
          ...prev,
          { text: `Sorry, I'm having trouble connecting. Please try again. Error: ${error.message}`, isUser: false }
          ]);
+
+          setIsAiTyping(false);
         },
    });
  
@@ -52,8 +69,27 @@ export default function ChatInterface() {
       messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
    }, [messages]);
 
+  // Update input message when speech recognition transcript changes
+  useEffect(() => {
+    if (transcript) {
+      setInputMessage(transcript);
+    }
+  }, [transcript]);
+
+  // Stop listening when sending a message
+  useEffect(() => {
+    if (isListening && chatMutation.isPending) {
+      toggleListening();
+    }
+  }, [chatMutation.isPending, isListening, toggleListening]);
+
   const handleSendMessage = () => {
    if (inputMessage.trim() && !chatMutation.isPending) {
+      // Reset transcript if using speech recognition
+      if (browserSupportsSpeechRecognition) {
+        resetTranscript();
+      }
+
       chatMutation.mutate(inputMessage.trim());
       setInputMessage("");
    }
@@ -67,14 +103,17 @@ export default function ChatInterface() {
    };
 
   const toggleVoiceControl = () => {
-    setIsListening(!isListening);
-    // Implement voice recognition logic here
-    console.log("Voice control:", !isListening ? "activated" : "deactivated");
+     toggleListening();
   };
 
   return (
     <div className="flex flex-col h-screen bg-gray-50 overflow-hidden">
       <div className="absolute right-6 top-4 z-10">
+         <TTSControl
+          isTTSEnabled={isTTSEnabled}
+          toggleTTS={toggleTTS}
+          isDisabled={chatMutation.isPending || isAiTyping}
+        />
          <button 
             onClick={() => navigate('/')}
             className="p-1 cursor-pointer rounded-full hover:text-[var(--primary-color)] transition-colors"
@@ -83,9 +122,9 @@ export default function ChatInterface() {
          </button>
       </div>
       
-      {/* Main Chat Area - Simplified structure */}
+      {/* Main Chat Area*/}
       <div className="flex flex-col h-full">
-        {/* Welcome section - only shown initially */}
+        {/* Welcome section  */}
         {messages.length <= 1 && (
           <div className="flex flex-col items-center pt-8 pb-4">
             <div className="w-24 mb-4">
@@ -135,14 +174,12 @@ export default function ChatInterface() {
               />
               
               <div className="flex space-x-2 ml-2">
-                {/* Voice control */}
-                <button
-                  onClick={toggleVoiceControl}
-                  disabled={chatMutation.isPending || isAiTyping}
-                  className={`h-8 w-8 p-0 flex items-center justify-center rounded-full transition-colors ${isListening ? 'bg-[#be1724] text-white' : 'text-gray-500 hover:text-[#be1724] hover:bg-gray-100'} disabled:opacity-50`}
-                >
-                  <FaMicrophone className="h-4 w-4" />
-                </button>
+                 <VoiceControl
+                  isListening={isListening}
+                  toggleVoiceControl={toggleVoiceControl}
+                  isDisabled={chatMutation.isPending || isAiTyping}
+                  browserSupportsSpeechRecognition={browserSupportsSpeechRecognition}
+                />
                 
                 {inputMessage.trim() && (
                   <button
