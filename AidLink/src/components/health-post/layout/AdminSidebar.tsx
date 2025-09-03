@@ -7,7 +7,7 @@ interface SidebarProps {
     onClose?: () => void;
 }
 
-const ChatSidebar: React.FC<SidebarProps> = ({ isOpen, children, onClose }) => {
+const AdminSidebar: React.FC<SidebarProps> = ({ isOpen, children, onClose }) => {
     return (
         <>
             <div className={`fixed flex flex-col top-0 left-0 h-[100vh] bg-gray-100 text-gray-800 shadow-lg
@@ -45,4 +45,4 @@ const ChatSidebar: React.FC<SidebarProps> = ({ isOpen, children, onClose }) => {
     )
 }
 
-export default ChatSidebar
+export default AdminSidebar

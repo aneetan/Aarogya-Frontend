@@ -4,7 +4,7 @@ interface NavbarProps{
     onClick: () => void;
     isOpen: boolean;
 }
-const ChatHeader:React.FC<NavbarProps> = ({onClick, isOpen}) => {
+const AdminHeader:React.FC<NavbarProps> = ({onClick, isOpen}) => {
   return (
       <nav className={`fixed flex justify-between top-0 left-0 right-0 bg-gray-50 shadow-sm p-4 z-40 ${isOpen ? 'ml-64' : 'ml-16'} transition-all duration-300`}>
           <button
@@ -20,4 +20,4 @@ const ChatHeader:React.FC<NavbarProps> = ({onClick, isOpen}) => {
   )
 }
 
-export default ChatHeader
+export default AdminHeader

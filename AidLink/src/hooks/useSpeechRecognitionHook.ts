@@ -1,5 +1,5 @@
 // hooks/useSpeechRecognition.ts
-import { useState, useEffect, useRef} from 'react';
+import { useState, useEffect} from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 export const useSpeechRecognitionHook = (onAutoSend: () => void) => {
