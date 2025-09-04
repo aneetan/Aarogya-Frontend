@@ -1,19 +1,20 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaPlus, FaSearch } from 'react-icons/fa';
+import type { Camp } from '../../types/camp.types';
 
 const ViewAllCamps = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   // Mock data for upcoming health camps
-  const upcomingCamps = [
+  const upcomingCamps: Camp[] = [
     {
       id: 2,
       name: "Eye Care Camp",
       location: "Community Center, Jharkhand",
       organizer: "Red Cross",
-      date: "2024-01-18",
+      date:   "2024-01-18",
       days: 2,
       starting_time: "10:00 AM",
       ending_time: "4:00 PM",
