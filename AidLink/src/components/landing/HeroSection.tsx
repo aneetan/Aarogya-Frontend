@@ -36,9 +36,21 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <button
-               className="bg-[var(--primary-color)] px-6 py-4 rounded-xl text-white font-semibold hover:bg-[var(--primary-dark)] shadow-lg hover:shadow-xl transition-all duration-300"
-            > Find Health Camps → </button>
+            <div className='flex gap-2'>
+              <button
+                className="bg-[var(--primary-color)] px-6 py-4 rounded-xl text-white font-semibold
+                hover:bg-[var(--primary-dark)] shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                First Aid Chatbot
+              </button>
+
+                <button
+                className="border-2 border-[var(--primary-color)] px-6 py-4 rounded-xl text-[var(--primary-color)]
+                font-semibold hover:bg-[var(--primary-color)] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Find Health Camps
+              </button>
+            </div>
           </motion.div>
         </motion.div>
 
@@ -65,7 +77,7 @@ const HeroSection = () => {
             >
               <img 
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS9RLvDL-Y0KBJwlKIp1XwxfDxm9hS0593Z8g&s" 
-                alt="Health Camps Map"
+                alt="Rural Image"
                 className="w-full h-full object-cover rounded-lg"
               />
             </motion.div>

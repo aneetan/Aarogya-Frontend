@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import CustomLayout from './components/landing/CustomLayout';
 import LandingPage from './pages/LandingPage';
 import ChatPage from './pages/ChatPage';
+import ViewAllCamps from './components/camp/ViewAllCamps';
 
 function App() {
   const queryClient = new QueryClient();
@@ -14,6 +15,7 @@ function App() {
           <Routes>
               <Route path='/' element={<CustomLayout/>}>
                 <Route path="/" element={<LandingPage />} />
+                <Route path="/camps" element={<ViewAllCamps />} />
               </Route>
                 <Route path='/chatbot' element={<ChatPage/>} />
           </Routes>

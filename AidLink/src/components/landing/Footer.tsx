@@ -1,3 +1,5 @@
+import Logo from "../Logo"
+
 const Footer = () => {
   return (
         <footer className="bg-gray-100 dark:bg-gray-900 px-12">
@@ -5,28 +7,26 @@ const Footer = () => {
                 <div className="md:flex md:justify-between">
                 <div className="mb-6 md:mb-0">
                     <a href="#" className="flex items-center">
-                        <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Rent
-                            <span className="text-[var(--primary-color)]">-ALL</span>
-                        </span>
+                        <Logo isName={true} />
                     </a>
                 </div>
                 <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
                     <div>
-                        <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase">Quick Links</h2>
+                        <h2 className="mb-6 text-base font-semibold text-gray-900 uppercase"> Services </h2>
                         <ul className="text-gray-500 font-medium">
                             <li className="mb-4">
-                                <a href="#" className="hover:underline">Rent</a>
+                                <a href="#" className="hover:underline"> First Aid Chatbot </a>
                             </li>
                             <li className="mb-4">
-                                <a href="#" className="hover:underline">Booking</a>
+                                <a href="#" className="hover:underline"> Health Camps </a>
                             </li>
                             <li>
-                                <a href="#" className="hover:underline">FAQs</a>
+                                <a href="#" className="hover:underline">Emergency Contacts</a>
                             </li>
                         </ul>
                     </div>
                     <div>
-                        <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
+                        <h2 className="mb-6 text-base font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
                         <ul className="text-gray-500 dark:text-gray-400 font-medium">
                             <li className="mb-4">
                                 <a href="#" className="hover:underline ">Terms &amp; Conditions</a>
@@ -37,7 +37,7 @@ const Footer = () => {
                         </ul>
                     </div>
                     <div>
-                        <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow Us </h2>
+                        <h2 className="mb-6 text-base font-semibold text-gray-900 uppercase dark:text-white">Follow Us </h2>
                         <div className="w-[70%] flex justify-between items-center">
                             <a href="https://www.facebook.com" className="text-gray-600 hover:transition-transform hover:scale-110">
                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -64,7 +64,7 @@ const Footer = () => {
             </div>
             <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
             <div className="sm:flex sm:items-center sm:justify-between">
-                <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2025 <a href="https://flowbite.com/" className="hover:underline">Rent-All</a>. All Rights Reserved.
+                <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2025 <a href="https://flowbite.com/" className="hover:underline"> Aarogya </a>. All Rights Reserved.
                 </span>
             </div>
             </div>

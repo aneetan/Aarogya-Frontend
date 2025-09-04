@@ -131,11 +131,13 @@ const Navbar = () => {
               ): (
                <>
                 <button
-                  className="bg-[var(--primary-color)] px-6 py-2 rounded-xl text-white font-semibold hover:bg-[var(--primary-dark)]"
+                  className="bg-[var(--primary-color)] px-6 py-2 rounded-xl text-white font-semibold
+                  hover:bg-[var(--primary-dark)] transition-colors duration-300"
                 onClick={() => navigate('/login')}
                 > Signup </button>
                 <button
-                  className="border-[var(--primary-color)] border-2 px-6 ml-4 py-2 rounded-xl text-[var(--primary-color)] font-semibold hover:bg-[var(--primary-dark)]"
+                  className="border-[var(--primary-color)] border-2 px-6 ml-4 py-2 rounded-xl text-[var(--primary-color)]
+                  font-semibold hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
                 onClick={() => navigate('/login')}
                 > Login </button>
                 </>
