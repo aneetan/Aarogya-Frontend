@@ -8,7 +8,7 @@ const Logo: React.FC<LogoProps> = ({isName}) => {
   return (
     <>
      {isName ? (
-      <img src={AarogyaNameLogo} alt="Aarogya Name Logo" className="h-8" />
+      <img src={AarogyaNameLogo} alt="Aarogya Name Logo" className="h-12" />
      ): (
       <img src={AarogyaLogo} alt="Aarogya Logo" />
      )}
