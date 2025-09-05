@@ -6,7 +6,7 @@ const HeroSection = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <section className="w-full min-h-screen py-20 px-4 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
+      <section className="w-full min-h-screen py-20 px-8 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
         <motion.div
           className="space-y-8"
@@ -16,7 +16,7 @@ const HeroSection = () => {
         >
           <div className="space-y-6">
             <motion.h1 
-              className="text-4xl lg:text-5xl font-bold text-foreground leading-tight"
+              className="text-3xl lg:text-5xl font-bold text-foreground leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -43,10 +43,10 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <div className='flex gap-2'>
+            <div className='flex flex-col md:flex-row gap-2'>
               <button
                 onClick={() => navigate('/chatbot')}
-                className="bg-[var(--primary-color)] px-6 py-4 rounded-xl text-white font-semibold
+                className="bg-[var(--primary-color)] px-5 md:px-6 py-4 rounded-xl text-white font-semibold
                 hover:bg-[var(--primary-dark)] shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 First Aid Chatbot

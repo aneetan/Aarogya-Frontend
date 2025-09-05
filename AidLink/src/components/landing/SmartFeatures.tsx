@@ -3,7 +3,7 @@ import { FaMapMarkerAlt, FaRobot } from 'react-icons/fa';
 
 const SmartFeatures = () => {
   return (
-   <section className="w-full py-20 px-4 lg:px-8 bg-gray-50">
+   <section className="w-full py-20 px-8 lg:px-8 bg-gray-50">
       <div className="max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
@@ -71,22 +71,22 @@ const SmartFeatures = () => {
           >
             <div className="relative">
               <motion.img 
-                src="https://cdn.dribbble.com/userupload/5131257/file/original-2b56f949eb9de3f457f44ad9513e02ee.jpg?resize=400x0" 
+                src="https://www.improvingphc.org/sites/default/files/case-study/image/2019/08/B4%20Nepal%20%28possible%29.jpg" 
                 alt="Health Camps Map Interface"
-                className="w-80 h-auto drop-shadow-2xl"
+                className="w-95 h-auto drop-shadow-2xl"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
               />
               
               <motion.div 
-                className="absolute -bottom-8 -left-8 bg-white rounded-xl shadow-lg p-4 w-40"
+                className="absolute -bottom-8 -left-6 bg-white rounded-xl shadow-lg p-4 w-30"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
                 viewport={{ once: true }}
               >
-                <div className="text-2xl font-bold text-health-primary">12</div>
-                <div className="text-sm text-muted-foreground">Health camps nearby</div>
+                <div className="text-2xl font-bold text-[var(--primary-color)]">12</div>
+                <div className="text-sm text-gray-600">Health camps nearby</div>
               </motion.div>
             </div>
           </motion.div>

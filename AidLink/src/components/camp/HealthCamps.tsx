@@ -58,7 +58,7 @@ const HealthCamps = () => {
   }
 ];
   return (
-    <section className="w-full py-16 px-4 lg:px-8 bg-gray-100">
+    <section className="w-full py-12 px-8 lg:px-8 bg-gray-100">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -69,7 +69,7 @@ const HealthCamps = () => {
           viewport={{ once: true }}
         >
           <h2 className="text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-            Health Camp Locations
+            Upcoming Health Camps
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
             Find upcoming health camps in your area to get free health care services
