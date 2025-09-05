@@ -4,7 +4,7 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 
 export const useSpeechRecognitionHook = (onAutoSend: () => void) => {
   const [isListening, setIsListening] = useState(false);
-   const [silenceTimeout, setSilenceTimeout] = useState<NodeJS.Timeout | null>(null);
+   const [silenceTimeout, setSilenceTimeout] = useState<number | null>(null);
   const {
     transcript,
     listening,

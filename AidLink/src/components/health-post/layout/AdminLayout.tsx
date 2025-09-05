@@ -1,10 +1,10 @@
 import { useState } from 'react'
 import { Outlet } from 'react-router';
-import ChatHeader from './ChatHeader';
-import ChatSidebar from './Sidebar';
+import AdminHeader from './AdminHeader';
+import AdminSidebar from './AdminSidebar';
 
 
-const ChatLayout= () => {
+const AdminLayout= () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const toggleSidebar = () => {
@@ -13,10 +13,10 @@ const ChatLayout= () => {
 
     return (
         <div className="bg-gray-100 min-h-screen">
-            <ChatHeader onClick={toggleSidebar} isOpen={isSidebarOpen} />
-            <ChatSidebar isOpen={isSidebarOpen} onClose={toggleSidebar}>
+            <AdminHeader onClick={toggleSidebar} isOpen={isSidebarOpen} />
+            <AdminSidebar isOpen={isSidebarOpen} onClose={toggleSidebar}>
                {/* <ChatHistory onNewChat= {onNewChat} history = {history} /> */}
-            </ChatSidebar>
+            </AdminSidebar>
 
             {/* Main content */}
             <main className={`h-fit bg-white pt-16 transition-all duration-300 ${isSidebarOpen ? 'md:ml-64 ' : 'ml-16'} p-4 mt-4`}>
@@ -26,4 +26,4 @@ const ChatLayout= () => {
     )
 }
 
-export default ChatLayout
+export default AdminLayout

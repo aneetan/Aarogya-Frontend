@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { FaHome, FaPhone, FaChevronLeft, FaChevronRight, FaTimes } from "react-icons/fa";
 import Logo from '../../Logo';
+import { useNavigate } from 'react-router';
 
 interface ChatSidebarProps {
   onClose: () => void;
@@ -9,6 +10,7 @@ interface ChatSidebarProps {
 const ChatSidebar: React.FC<ChatSidebarProps> = ({onClose}) => {
   const [expanded, setExpanded] = useState(true);
   const [activeItem, setActiveItem] = useState("Home");
+  const navigate = useNavigate();
   
   const navigationItems = [
     { icon: FaHome, label: "Go to Home" },
@@ -63,13 +65,8 @@ const ChatSidebar: React.FC<ChatSidebarProps> = ({onClose}) => {
                 : "text-gray-800 hover:bg-white/10 hover:text-[var(--primary-dark)]"
             }`}
           >
-            <item.icon className={`h-5 w-5 ${expanded ? 'mr-3' : 'mx-auto'}`} />
-            {expanded && <span className="font-medium">{item.label}</span>}
-            {!expanded && (
-              <div className="absolute left-14 ml-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-                {item.label}
-              </div>
-            )}
+            <item.icon className={`h-5 w-5 ${expanded ? 'mr-3' : 'mx-auto'}`} onClick={() => navigate('/')} />
+            {expanded && <span className="font-medium" onClick={() => navigate('/')}>{item.label}</span>}
           </button>
         ))}
       </nav>
