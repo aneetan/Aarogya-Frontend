@@ -8,13 +8,10 @@ const LandingPage = () => {
       <div className="landing-page">
         <section id="home">
           <HeroSection />
-          <SmartFeatures/>
           <HealthCamps/>
+          <SmartFeatures/>
         </section>
-      
-      {/* <section id="contact">
-        <ContactUs />
-      </section>  */}
+    
     </div>
     </>
   )

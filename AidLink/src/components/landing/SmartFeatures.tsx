@@ -18,8 +18,8 @@ const SmartFeatures = () => {
                 Smart healthcare<br />
                 at your fingertips
               </h2>
-              <p className="text-xl text-muted-foreground">
-                Access instant first-aid guidance and find nearby health facilities with our intelligent rural health companion app.
+              <p className="text-xl text-gray-600">
+                Access instant first-aid guidance and find nearby health facilities.
               </p>
             </div>
 

@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
+import Interface from '../../assets/image/firstaid_interface.png'
+import { useNavigate } from 'react-router';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <div>
       <section className="w-full min-h-screen py-20 px-4 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
@@ -13,21 +16,25 @@ const HeroSection = () => {
         >
           <div className="space-y-6">
             <motion.h1 
-              className="text-5xl lg:text-6xl font-bold text-foreground leading-tight"
+              className="text-4xl lg:text-5xl font-bold text-foreground leading-tight"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
             >
-              Your Rural Health Companion
+              <span className='text-[var(--primary-color)]'> First Aid </span>
+              at Hand, <br/>
+              Health Camps
+              at <span className='text-[var(--primary-color)]'> Heart </span>!
             </motion.h1>
             
             <motion.p 
-              className="text-xl text-muted-foreground leading-relaxed"
+              className="text-xl text-gray-600 leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              Get instant first-aid guidance, locate nearby health camps, and access essential healthcare information even in remote areas.
+              Bringing essential first-aid guidance and rural health camps to your doorstep 
+              - because every community deserves access to care.
             </motion.p>
           </div>
 
@@ -38,13 +45,15 @@ const HeroSection = () => {
           >
             <div className='flex gap-2'>
               <button
+                onClick={() => navigate('/chatbot')}
                 className="bg-[var(--primary-color)] px-6 py-4 rounded-xl text-white font-semibold
                 hover:bg-[var(--primary-dark)] shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 First Aid Chatbot
               </button>
 
-                <button
+              <button
+                onClick={() => navigate('/camps')}
                 className="border-2 border-[var(--primary-color)] px-6 py-4 rounded-xl text-[var(--primary-color)]
                 font-semibold hover:bg-[var(--primary-color)] hover:text-white shadow-lg hover:shadow-xl transition-all duration-300"
               >
@@ -62,7 +71,7 @@ const HeroSection = () => {
         >
           <div className="relative">
             <motion.img 
-              src="https://play-lh.googleusercontent.com/Yp2F23QSjQ0psYGyw4ewaoaWWG_CFkNE1y9pVLXM1DOlelYTXHgCvPFz4uLqUWarcyk=w526-h296-rw"
+              src={Interface}
               alt="RuralCare App Interface"
               className="w-80 h-auto relative z-10 drop-shadow-2xl"
               animate={{ y: [0, -10, 0] }}

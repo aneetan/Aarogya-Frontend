@@ -3,11 +3,10 @@ import { NavLink, useLocation, useNavigate } from "react-router";
 import Logo from "../Logo";
 
 const AppRoutes = {
-  HOME: "#home",
+  HOME: "/",
   FIRST_AID_CHAT: "/chatbot",
-  HEALTH_CAMPS: "#health-camp",
-  FEATURES: "#features",
-  ABOUT: "#about",
+  HEALTH_CAMPS: "/camps",
+  ABOUT: "/about",
 } as const;
 
 interface NavItem {
@@ -30,7 +29,6 @@ const Navbar = () => {
     { key: "HOME", label: "Home", path: AppRoutes.HOME },
     { key: "FIRST_AID_CHAT", label: "Chatbot", path: AppRoutes.FIRST_AID_CHAT },
     { key: "HEALTH_CAMPS", label: "Health Camps", path: AppRoutes.HEALTH_CAMPS },
-    { key: "FEATURES", label: "Contact", path: AppRoutes.FEATURES },
     { key: "ABOUT", label: "About", path: AppRoutes.ABOUT },
   ];
 
@@ -62,8 +60,6 @@ const Navbar = () => {
       setIsActive("FIRST_AID_CHAT");
     } else if (hash === AppRoutes.ABOUT) {
       setIsActive("ABOUT");
-    } else if (hash === AppRoutes.FEATURES) {
-      setIsActive("FEATURES");
     } else if (hash === AppRoutes.HEALTH_CAMPS) {
       setIsActive("HEALTH_CAMPS");
     }
@@ -92,7 +88,7 @@ const Navbar = () => {
   return (
     <>
      <nav className={`sticky top-0 z-50 ${isScrolled ? "shadow-md bg-white" : ""}`}>
-      <div className={`flex justify-between w-full items-center sticky ${isScrolled ? " bg-white" : "bg-gray-100"}  p-6 z-100`}>
+      <div className={`flex justify-between w-full items-center sticky ${isScrolled ? "bg-white" : "bg-gray-50"}  p-6 z-100`}>
         <span className="font-bold text-2xl md:ml-12 ml-6">
             <Logo isName={true}/>
         </span>
@@ -130,14 +126,15 @@ const Navbar = () => {
                 <button onClick={handleLogout}> Logout </button>
               ): (
                <>
-                <button
-                  className="bg-[var(--primary-color)] px-6 py-2 rounded-xl text-white font-semibold
-                  hover:bg-[var(--primary-dark)] transition-colors duration-300"
-                onClick={() => navigate('/login')}
-                > Signup </button>
-                <button
+               <button
                   className="border-[var(--primary-color)] border-2 px-6 ml-4 py-2 rounded-xl text-[var(--primary-color)]
                   font-semibold hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
+                onClick={() => navigate('/login')}
+                > Signup </button>
+
+                <button
+                  className="bg-[var(--primary-color)] px-6 py-2 border-2 ml-4 rounded-xl text-white font-semibold
+                  hover:bg-[var(--primary-dark)] transition-colors duration-300"
                 onClick={() => navigate('/login')}
                 > Login </button>
                 </>

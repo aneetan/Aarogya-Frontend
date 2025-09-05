@@ -1,7 +1,7 @@
 import { useState } from "react";
 import type { Camp } from "../../types/camp.types";
 import CampCards from "./CampCards"
-import { FaSearch } from "react-icons/fa";
+import { FaPlus, FaSearch } from "react-icons/fa";
 
 const ViewAllCamps = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -60,21 +60,27 @@ const ViewAllCamps = () => {
     )
   );
 
-  
   return (
     <>
-     <section className="min-h-screen bg-gradient-to-br from-background to-nature-light/30">
+     <section className="min-h-screen bg-gray-50 mb-12">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8 text-center">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Discover Amazing Camps
+          <h1 className="text-3xl font-bold text-foreground mb-4">
+            Discover Life-Changing Health Camps
           </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Find the perfect camping experience with our curated selection of camps across beautiful locations.
+          <p className="text-base max-w-xl mx-auto text-gray-700">
+            Access free medical checkups and essential healthcare services through dedicated heath camps.
           </p>
         </div>
+        <button
+          className="px-4 py-3 rounded-xl text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white font-medium flex items-center
+          shadow-md hover:shadow-lg transition-all duration-300 border-2 border-[var(--primary-color)] text-sm float-right mb-4"
+        >
+          <FaPlus className="mr-2" />
+          Add New Camp
+        </button>
 
-        <div className="flex gap-4 w-full h-[80vh]">
+        <div className="flex flex-col md:flex-row gap-4 w-full h-[100vh]">
           {/* Left Side - Camp Listings */}
           <div className="bg-white rounded-xl shadow-lg md:w-[30%] w-full p-6 h-full flex flex-col">
             <div className="flex flex-col h-full">
@@ -97,7 +103,7 @@ const ViewAllCamps = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto pr-2 mt-2">
-              <CampCards camps={camps} />
+              <CampCards camps={filteredCamps.length > 0 ? filteredCamps : camps} />
 
               {filteredCamps.length === 0 && (
                 <div className="text-center py-8 text-gray-500">
@@ -109,7 +115,7 @@ const ViewAllCamps = () => {
           </div>
 
           {/* Right Side - Map */}
-          <div className="rounded-xl shadow-gray-400 overflow-hidden w-[70%]">
+          <div className="rounded-xl shadow-gray-400 w-[70%]">
             <div className="relative h-full">
               <img 
                 src="https://docs.maptiler.com/leaflet/examples/react/map.png" 
