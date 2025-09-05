@@ -7,40 +7,51 @@ const ViewAllCamps = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
-  // Mock data for upcoming health camps
   const upcomingCamps: Camp[] = [
     {
       id: 2,
       name: "Eye Care Camp",
       location: "Community Center, Jharkhand",
       organizer: "Red Cross",
-      date:   "2024-01-18",
+      contact: "+91-9876543210",
+      description: "Free eye care camp providing comprehensive eye examinations, cataract screening, and free glasses for those in need",
+      date: new Date("2024-01-18"),
       days: 2,
       starting_time: "10:00 AM",
       ending_time: "4:00 PM",
       services: ["Eye Examination", "Cataract Screening", "Free Glasses"],
+      lat: 23.6345,
+      long: 85.3803
     },
     {
       id: 3,
       name: "Women & Child Health Camp",
       location: "Primary School, Odisha",
       organizer: "Red Cross",
-      date: "2024-01-20",
+      contact: "+91-8765432109",
+      description: "Healthcare camp focused on women and children's health, offering vaccinations, maternal health services, and nutrition guidance",
+      date: new Date("2024-01-20"),
       days: 2,
       starting_time: "8:00 AM",
       ending_time: "6:00 PM",
       services: ["Vaccination", "Maternal Health", "Child Nutrition"],
+      lat: 20.9517,
+      long: 85.0985
     },
     {
       id: 4,
       name: "Dental Care Camp",
-      organizer: "Red Cross",
       location: "Rural Health Center, Bihar",
-      date: "2024-01-22",
+      organizer: "Red Cross",
+      contact: "+91-7654321098",
+      description: "Free dental care camp providing comprehensive dental checkups, cleaning services, and oral health education",
+      date: new Date("2024-01-22"),
       days: 2,
       starting_time: "10:00 AM",
       ending_time: "4:00 PM",
       services: ["Dental Checkup", "Tooth Cleaning", "Oral Health Education"],
+      lat: 25.0961,
+      long: 85.3131
     }
   ];
 

@@ -9,7 +9,7 @@ interface CampDetailsProps {
 
 const CampDetails: React.FC<CampDetailsProps> = ({ camp, onClose }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
       <motion.div 
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -76,12 +76,16 @@ const CampDetails: React.FC<CampDetailsProps> = ({ camp, onClose }) => {
           <div className="flex justify-end gap-3">
             <button 
               onClick={onClose}
-              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors"
+              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg
+              hover:bg-gray-100 transition-colors"
             >
               Close
             </button>
-            <button className="px-4 py-2 bg-[var(--primary-color)] hover:bg-[var(--primary-dark)] text-white rounded-lg transition-colors">
-              Register for Camp
+            <button
+              className="px-4 py-2 bg-[var(--primary-color)] hover:bg-[var(--primary-dark)] 
+              text-white rounded-lg transition-colors"
+            >
+              View Location
             </button>
           </div>
         </div>

@@ -1,52 +1,73 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaPlus, FaSearch } from 'react-icons/fa';
+import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaPlus } from 'react-icons/fa';
+import type { Camp } from '../../types/camp.types';
+import CampDetails from './CampDetails';
+import { useNavigate } from 'react-router';
 
 const HealthCamps = () => {
   const [showAddForm, setShowAddForm] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCamp, setSelectedCamp] = useState<Camp | null>(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const navigate = useNavigate();
 
-  // Mock data for upcoming health camps
-  const upcomingCamps = [
-    {
-      id: 2,
-      name: "Eye Care Camp",
-      location: "Community Center, Jharkhand",
-      organizer: "Red Cross",
-      date: "2024-01-18",
-      days: 2,
-      starting_time: "10:00 AM",
-      ending_time: "4:00 PM",
-      services: ["Eye Examination", "Cataract Screening", "Free Glasses"],
-    },
-    {
-      id: 3,
-      name: "Women & Child Health Camp",
-      location: "Primary School, Odisha",
-      organizer: "Red Cross",
-      date: "2024-01-20",
-      days: 2,
-      starting_time: "8:00 AM",
-      ending_time: "6:00 PM",
-      services: ["Vaccination", "Maternal Health", "Child Nutrition"],
-    },
-    {
-      id: 4,
-      name: "Dental Care Camp",
-      organizer: "Red Cross",
-      location: "Rural Health Center, Bihar",
-      date: "2024-01-22",
-      days: 2,
-      starting_time: "10:00 AM",
-      ending_time: "4:00 PM",
-      services: ["Dental Checkup", "Tooth Cleaning", "Oral Health Education"],
-    }
-  ];
+  const upcomingCamps: Camp[] = [
+  {
+    id: 2,
+    name: "Eye Care Camp",
+    location: "Community Center, Jharkhand",
+    organizer: "Red Cross",
+    contact: "+91-9876543210",
+    description: "Free eye care camp providing comprehensive eye examinations, cataract screening, and free glasses for those in need",
+    date: new Date("2024-01-18"),
+    days: 2,
+    starting_time: "10:00 AM",
+    ending_time: "4:00 PM",
+    services: ["Eye Examination", "Cataract Screening", "Free Glasses"],
+    lat: 23.6345,
+    long: 85.3803
+  },
+  {
+    id: 3,
+    name: "Women & Child Health Camp",
+    location: "Primary School, Odisha",
+    organizer: "Red Cross",
+    contact: "+91-8765432109",
+    description: "Healthcare camp focused on women and children's health, offering vaccinations, maternal health services, and nutrition guidance",
+    date: new Date("2024-01-20"),
+    days: 2,
+    starting_time: "8:00 AM",
+    ending_time: "6:00 PM",
+    services: ["Vaccination", "Maternal Health", "Child Nutrition"],
+    lat: 20.9517,
+    long: 85.0985
+  },
+  {
+    id: 4,
+    name: "Dental Care Camp",
+    location: "Rural Health Center, Bihar",
+    organizer: "Red Cross",
+    contact: "+91-7654321098",
+    description: "Free dental care camp providing comprehensive dental checkups, cleaning services, and oral health education",
+    date: new Date("2024-01-22"),
+    days: 2,
+    starting_time: "10:00 AM",
+    ending_time: "4:00 PM",
+    services: ["Dental Checkup", "Tooth Cleaning", "Oral Health Education"],
+    lat: 25.0961,
+    long: 85.3131
+  }
+];
 
-  const filteredCamps = upcomingCamps.filter(camp =>
-    camp.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    camp.location.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSeeDetails = (camp: Camp) => {
+    setSelectedCamp(camp);
+    setShowDetailsModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowDetailsModal(false);
+    setSelectedCamp(null);
+  };
 
   return (
     <section className="w-full py-16 px-4 lg:px-8 bg-gray-100">
@@ -67,7 +88,7 @@ const HealthCamps = () => {
           </p>
         </motion.div>
 
-        {/* Search and Add Button */}
+        {/* Add Button */}
         <motion.div
           className="flex flex-col sm:flex-row gap-4 mb-10 justify-between items-center"
           initial={{ opacity: 0, y: 20 }}
@@ -75,20 +96,11 @@ const HealthCamps = () => {
           transition={{ duration: 0.6, delay: 0.2 }}
           viewport={{ once: true }}
         >
-          <div className="relative flex-1 max-w-xl">
-            <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              placeholder="Search camps by name or location..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-400  transition-all duration-300"
-            />
-          </div>
+          <div></div>
           <button
             onClick={() => setShowAddForm(!showAddForm)}
-            className="px-4 py-3 rounded-xl bg-[var(--primary-color)] hover:bg-[var(--primary-dark)] text-white font-medium flex items-center
-            shadow-md hover:shadow-lg transition-all duration-300"
+            className="px-4 py-3 rounded-xl text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white font-medium flex items-center
+            shadow-md hover:shadow-lg transition-all duration-300 border-2 border-[var(--primary-color)]"
           >
             <FaPlus className="mr-2" />
             Add New Camp
@@ -97,7 +109,7 @@ const HealthCamps = () => {
 
         {/* Upcoming Camps */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {filteredCamps.map((camp, index) => (
+          {upcomingCamps.map((camp, index) => (
             <motion.div
               key={camp.id}
               initial={{ opacity: 0, y: 20 }}
@@ -148,8 +160,11 @@ const HealthCamps = () => {
                   View location
                 </button>
 
-                <button className="w-1/2 py-3 hover:bg-[var(--primary-color)] border-2 border-[var(--primary-color)] text-[var(--primary-color)] 
-                font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:text-white">
+                <button
+                  onClick={() => handleSeeDetails(camp)}
+                  className="w-1/2 py-3 hover:bg-[var(--primary-color)] border-2 border-[var(--primary-color)]
+                  text-[var(--primary-color)] font-medium rounded-xl shadow-md hover:shadow-lg transition-all
+                  duration-300 hover:text-white">
                   See details
                 </button>
                 </div>
@@ -158,7 +173,7 @@ const HealthCamps = () => {
           ))}
         </div>
 
-        {filteredCamps.length === 0 && (
+        {upcomingCamps.length === 0 && (
           <motion.div
             className="text-center py-16"
             initial={{ opacity: 0 }}
@@ -173,6 +188,23 @@ const HealthCamps = () => {
               Try adjusting your search term
             </p>
           </motion.div>
+        )}
+
+        <div className='py-6 flex justify-center items-center'>
+          <button
+            onClick={() => navigate('/camps')}
+            className="px-4 py-3 rounded-xl bg-[var(--primary-color)] hover:bg-[var(--primary-dark)] text-white font-medium flex items-center
+            shadow-md hover:shadow-lg transition-all duration-300"
+          >
+            View All Camps
+          </button>
+        </div>
+
+        {showDetailsModal && selectedCamp && (
+          <CampDetails 
+            camp={selectedCamp} 
+            onClose={handleCloseModal} 
+          />
         )}
       </div>
     </section>
