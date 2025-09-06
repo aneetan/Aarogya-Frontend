@@ -10,7 +10,6 @@ import useGeoLocation from "../../hooks/useGeoLocation";
 import "leaflet-routing-machine";
 import "leaflet-routing-machine/dist/leaflet-routing-machine.css";
 
-
 interface MapPosition {
   lat: number;
   lng: number;
@@ -18,7 +17,7 @@ interface MapPosition {
 
 interface BasicMapProps {
   camps: Camp[];
-  onCampSelect : (camp: Camp | null) => void;
+  onCampSelect: (camp: Camp | null) => void;
   selectedCamp: Camp | null;
 }
 
@@ -48,13 +47,12 @@ export const FlyToLocation: React.FC<FlyToLocationProps> = ({ location, zoomLeve
 
   useEffect(() => {
     if (location.loaded && !location.error && location.coordinates) {
-      map.flyTo([
-         Number(location.coordinates.lat),
-         Number(location.coordinates.lng)
-      ],
-      zoomLevel,
-      { animate: true }
-      );
+      const lat = Number(location.coordinates.lat);
+      const lng = Number(location.coordinates.lng);
+      
+      if (!isNaN(lat) && !isNaN(lng)) {
+        map.flyTo([lat, lng], zoomLevel, { animate: true });
+      }
     }
   }, [location, zoomLevel, map]);
 
@@ -75,29 +73,47 @@ const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 };
 
-const BasicMap: React.FC<BasicMapProps> = ({camps, onCampSelect, selectedCamp}) => {
+// Custom hook to get map instance
+const useMapInstance = () => {
+  const [mapInstance, setMapInstance] = useState<L.Map | null>(null);
+  const mapRef = useRef<L.Map>(null);
+
+  useEffect(() => {
+    if (mapRef.current) {
+      setMapInstance(mapRef.current);
+    }
+  }, []);
+
+  return { mapRef, mapInstance };
+};
+
+const BasicMap: React.FC<BasicMapProps> = ({ camps, onCampSelect, selectedCamp }) => {
   const [center] = useState<MapPosition>({
     lat: 27.64256108005826,
     lng: 85.32555398598879
   });
 
   const [nearbyCamps, setNearbyCamps] = useState<Camp[]>([]);
+  const [routeLine, setRouteLine] = useState<L.Polyline | null>(null);
   const ZOOM_LEVEL = 13;
-  const mapRef = useRef<L.Map>(null);
+  const { mapRef, mapInstance } = useMapInstance();
   const location = useGeoLocation();
   const routingControlRef = useRef<L.Routing.Control | null>(null);
 
   // Filter nearby camps when location changes
   useEffect(() => {
     if (location.loaded && !location.error && location.coordinates && camps.length > 0) {
-      const userLat = location.coordinates.lat;
-      const userLng = location.coordinates.lng;
+      const userLat = Number(location.coordinates.lat);
+      const userLng = Number(location.coordinates.lng);
+      
+      if (isNaN(userLat) || isNaN(userLng)) return;
+
       const radius = 100;
 
       const nearby = camps.filter(camp => {
         const distance = calculateDistance(
-          Number(userLat),
-          Number(userLng),
+          userLat,
+          userLng,
           camp.lat,
           camp.lng
         );
@@ -106,47 +122,75 @@ const BasicMap: React.FC<BasicMapProps> = ({camps, onCampSelect, selectedCamp}) 
 
       setNearbyCamps(nearby);
     }
-  }, [location]);
+  }, [location, camps]);
 
   // Add routing between user location and selected camp
   useEffect(() => {
-    if (location.loaded && !location.error && location.coordinates && selectedCamp && mapRef.current) {
-      const userLatLng = L.latLng(Number(location.coordinates.lat), Number(location.coordinates.lng));
+    if (!mapInstance) return;
+
+     // Clear existing route
+    if (routeLine) {
+      mapInstance.removeLayer(routeLine);
+      setRouteLine(null);
+    }
+
+    if (location.loaded && !location.error && location.coordinates && selectedCamp) {
+      const userLat = Number(location.coordinates.lat);
+      const userLng = Number(location.coordinates.lng);
+      
+      if (isNaN(userLat) || isNaN(userLng) || isNaN(selectedCamp.lat) || isNaN(selectedCamp.lng)) {
+        console.error('Invalid coordinates for routing');
+        return;
+      }
+
+      const userLatLng = L.latLng(userLat, userLng);
       const selectedLatLng = L.latLng(selectedCamp.lat, selectedCamp.lng);
 
       // Remove existing routing control if any
       if (routingControlRef.current) {
-        mapRef.current.removeControl(routingControlRef.current);
+        try {
+          mapInstance.removeControl(routingControlRef.current);
+        } catch (error) {
+          console.warn('Error removing routing control:', error);
+        }
         routingControlRef.current = null;
       }
 
-      // Add new routing control with proper type casting
+      // Add new routing control
       routingControlRef.current = (L.Routing as any).control({
         waypoints: [userLatLng, selectedLatLng],
+         router: L.Routing.osrmv1({
+          serviceUrl: 'https://router.project-osrm.org/route/v1'
+        }),
         lineOptions: {
           styles: [{ color: '#0066cc', weight: 4 }]
         },
-        show: false,
+        show: true,
         routeWhileDragging: false,
         addWaypoints: false,
         draggableWaypoints: false,
         fitSelectedRoutes: true,
         createMarker: () => null,
-      }).addTo(mapRef.current);
+      }).addTo(mapInstance);
     }
 
     // Cleanup function to remove routing control
     return () => {
-      if (routingControlRef.current && mapRef.current) {
-        mapRef.current.removeControl(routingControlRef.current);
+      if (routingControlRef.current && mapInstance) {
+        try {
+          mapInstance.removeControl(routingControlRef.current);
+        } catch (error) {
+          console.warn('Error cleaning up routing control:', error);
+        }
       }
     };
-  }, [location, selectedCamp]);
+  }, [location, selectedCamp, mapInstance]);
 
+  // Fly to selected camp
   useEffect(() => {
-    if (selectedCamp && mapRef.current) {
+    if (selectedCamp && mapInstance) {
       if (!isNaN(selectedCamp.lat) && !isNaN(selectedCamp.lng)) {
-        mapRef.current.flyTo(
+        mapInstance.flyTo(
           [selectedCamp.lat, selectedCamp.lng],
           13,
           { animate: true, duration: 1.5 }
@@ -155,56 +199,56 @@ const BasicMap: React.FC<BasicMapProps> = ({camps, onCampSelect, selectedCamp}) 
         console.error('Invalid coordinates for selected camp:', selectedCamp);
       }
     }
-  }, [selectedCamp]);
+  }, [selectedCamp, mapInstance]);
 
   return (
-    <>
-      <MapContainer
-        center={center}
-        zoom={ZOOM_LEVEL}
-        ref={mapRef}
-        style={{ height: '100vh', width: '100%' }}
-      >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        />
-        
-        {/* Auto fly to user location */}
-        <FlyToLocation location={location} zoomLevel={ZOOM_LEVEL} />
+    <MapContainer
+      center={center}
+      zoom={ZOOM_LEVEL}
+      ref={mapRef}
+      style={{ height: '100vh', width: '100%' }}
+    >
+      <TileLayer
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      />
+      
+      {/* Auto fly to user location */}
+      <FlyToLocation location={location} zoomLevel={ZOOM_LEVEL} />
 
-        {/* User location marker */}
-        {location.loaded && !location.error && location.coordinates && (
-          <Marker
-            position={[Number(location.coordinates.lat), Number(location.coordinates.lng)]}
-            icon={userLocationIcon}
-          >
-            <Popup>
-              <b>Your Location</b>
-            </Popup>
-          </Marker>
-        )}
+      {/* User location marker */}
+      {location.loaded && !location.error && location.coordinates && (
+        <Marker
+          position={[
+            Number(location.coordinates.lat), 
+            Number(location.coordinates.lng)
+          ]}
+          icon={userLocationIcon}
+        >
+          <Popup>
+            <b>Your Location</b>
+          </Popup>
+        </Marker>
+      )}
 
-        {/* Nearby camps markers */}
-        {nearbyCamps.map((camp) => (
-          <Marker
-            position={[camp.lat, camp.lng]}
-            icon={markerIcon}
-            key={camp.id}
-            eventHandlers={{
-              click: () => {
-                selectedCamp = camp;
-                onCampSelect(camp); // Notify parent component
-              },
-            }}
-          >
-            <Popup>
-              <b>{camp.name}</b>
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
-    </>
+      {/* Nearby camps markers */}
+      {nearbyCamps.map((camp) => (
+        <Marker
+          position={[camp.lat, camp.lng]}
+          icon={markerIcon}
+          key={camp.id}
+          eventHandlers={{
+            click: () => {
+              onCampSelect(camp);
+            },
+          }}
+        >
+          <Popup>
+            <b>{camp.name}</b>
+          </Popup>
+        </Marker>
+      ))}
+    </MapContainer>
   );
 };
 
