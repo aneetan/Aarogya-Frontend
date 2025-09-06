@@ -8,6 +8,7 @@ const ViewAllCamps = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCamp, setSelectedCamp] = useState<Camp | null>(null);
   const [showAllCamps, setShowAllCamps] = useState(true);
+
   const campListRef = useRef<HTMLDivElement>(null);
     const camps: Camp[] = [
     {
@@ -87,6 +88,14 @@ const ViewAllCamps = () => {
     setShowAllCamps(false);
   };
 
+  const handleViewLocation = (camp: Camp) => {
+    setSelectedCamp(camp);
+    setShowAllCamps(false); // Show only this camp
+    
+    // Optional: You could also trigger a map fly-to action here
+    // by passing a callback to BasicMap or using a ref
+  };
+
   const handleBackToAllCamps = () => {
     setSelectedCamp(null);
     setShowAllCamps(true);
@@ -155,7 +164,7 @@ const ViewAllCamps = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto pr-2">
-               <CampCards camps={displayCamps} />
+               <CampCards camps={displayCamps} onViewLocation={handleViewLocation} />
 
                {showAllCamps && filteredCamps.length === 0 && (
                 <div className="text-center py-8 text-gray-500">

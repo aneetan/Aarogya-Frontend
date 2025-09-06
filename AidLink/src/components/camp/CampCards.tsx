@@ -6,9 +6,10 @@ import CampDetails from './CampDetails';
 
 interface CampCardsProps {
   camps: Camp[];
+  onViewLocation?: (camp:Camp) => void;
 }
 
-const CampCards: React.FC<CampCardsProps> = ({camps}) => {
+const CampCards: React.FC<CampCardsProps> = ({camps, onViewLocation}) => {
    const [selectedCamp, setSelectedCamp] = useState<Camp | null>(null);
    const [showDetailsModal, setShowDetailsModal] = useState(false);
 
@@ -20,6 +21,12 @@ const CampCards: React.FC<CampCardsProps> = ({camps}) => {
    const handleCloseModal = () => {
       setShowDetailsModal(false);
       setSelectedCamp(null);
+   };
+
+   const handleViewLocation = (camp: Camp) => {
+      if (onViewLocation) {
+         onViewLocation(camp);
+      }
    };
 
    
@@ -71,17 +78,21 @@ const CampCards: React.FC<CampCardsProps> = ({camps}) => {
             </div>
 
             <div className='flex gap-2 items-center'>
-            <button className="w-1/2 py-3 bg-[var(--primary-color)] hover:bg-[var(--primary-dark)] text-white
-            font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-            View location
+            <button 
+               onClick={() => handleViewLocation(camp)}
+               className="w-1/2 py-3 bg-[var(--primary-color)] hover:bg-[var(--primary-dark)] text-white
+               font-medium rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+            >
+               View location
             </button>
 
             <button
-            onClick={() => handleSeeDetails(camp)}
-            className="w-1/2 py-3 hover:bg-[var(--primary-color)] border-2 border-[var(--primary-color)]
-            text-[var(--primary-color)] font-medium rounded-xl shadow-md hover:shadow-lg transition-all
-            duration-300 hover:text-white">
-            See details
+               onClick={() => handleSeeDetails(camp)}
+               className="w-1/2 py-3 hover:bg-[var(--primary-color)] border-2 border-[var(--primary-color)]
+               text-[var(--primary-color)] font-medium rounded-xl shadow-md hover:shadow-lg transition-all
+               duration-300 hover:text-white"
+            >
+               See details
             </button>
             </div>
          </div>
