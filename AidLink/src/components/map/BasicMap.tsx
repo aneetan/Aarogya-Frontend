@@ -147,7 +147,7 @@ const BasicMap: React.FC<BasicMapProps> = ({camps, onCampSelect, selectedCamp}) 
   useEffect(() => {
     if (selectedCamp && mapRef.current) {
       mapRef.current.flyTo(
-        [selectedCamp.lat, selectedCamp.long],
+        [Number(selectedCamp.lat), Number(selectedCamp.long)],
         15, // Zoom level
         { animate: true, duration: 1.5 }
       );

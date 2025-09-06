@@ -10,7 +10,7 @@ const ViewAllCamps = () => {
   const [showAllCamps, setShowAllCamps] = useState(true);
 
   const campListRef = useRef<HTMLDivElement>(null);
-    const camps: Camp[] = [
+  const camps: Camp[] = [
     {
       id: 2,
       name: "Eye Care Camp",
@@ -90,10 +90,7 @@ const ViewAllCamps = () => {
 
   const handleViewLocation = (camp: Camp) => {
     setSelectedCamp(camp);
-    setShowAllCamps(false); // Show only this camp
-    
-    // Optional: You could also trigger a map fly-to action here
-    // by passing a callback to BasicMap or using a ref
+    setShowAllCamps(false); 
   };
 
   const handleBackToAllCamps = () => {
@@ -107,13 +104,13 @@ const ViewAllCamps = () => {
 
   return (
     <>
-     <section className="min-h-screen bg-gray-50 mb-12">
+     <section className="min-h-screen bg-gray-50 pb-8">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-foreground mb-4">
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground mb-4">
             Discover Life-Changing Health Camps
           </h1>
-          <p className="text-base max-w-xl mx-auto text-gray-700">
+          <p className="text-sm md:text-base max-w-xl mx-auto text-gray-700">
             Access free medical checkups and essential healthcare services through dedicated heath camps.
           </p>
         </div>
@@ -125,9 +122,23 @@ const ViewAllCamps = () => {
           Add New Camp
         </button>
 
-        <div className="flex flex-col md:flex-row gap-4 w-full h-[100vh]">
+        {/* Map at the top for mobile screens */}
+          <div className="lg:hidden rounded-xl overflow-hidden shadow-md w-full h-100 mb-6">
+            <div className="relative w-full z-0 object-contain">
+              <BasicMap 
+                camps={camps} 
+                onCampSelect={handleCampSelect}
+                selectedCamp={selectedCamp}
+              />
+              <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg p-3 border border-gray-200 shadow-sm">
+                <p className="text-sm text-gray-700">Click on markers for details</p>
+              </div>
+            </div>
+          </div>
+
+        <div className="flex flex-col lg:flex-row gap-4 w-full lg:h-[100vh]">
           {/* Left Side - Camp Listings */}
-          <div className="bg-white rounded-xl shadow-lg md:w-[30%] w-full p-6 h-full flex flex-col">
+          <div className="bg-white rounded-xl shadow-lg lg:w-[35%] w-full p-4 md:p-6 flex flex-col">
             <div className="flex flex-col h-full">
               <div className="sticky top-0 bg-white pb-4 z-10">
 
@@ -140,11 +151,10 @@ const ViewAllCamps = () => {
                     Back to all camps
                   </button>
                 ) : (
-                  <h2 className="font-bold text-2xl text-[var(--primary-color)] mb-4"> 
+                  <h2 className="font-bold text-xl md:text-2xl text-[var(--primary-color)] mb-4"> 
                     Available Health Camps 
                   </h2>
                 )}
-              {/* <h2 className="font-bold text-2xl text-[var(--primary-color)] mb-4"> Available Health Camps </h2> */}
               
               {/* Search */}
              {showAllCamps && (
@@ -176,7 +186,7 @@ const ViewAllCamps = () => {
           </div>
 
           {/* Right Side - Map */}
-          <div className="rounded-xl shadow-gray-400 w-[70%]">
+          <div className="hidden lg:block rounded-xl shadow-gray-400 w-[70%]">
             <div className="relative h-full z-0">
                <BasicMap 
                 camps={camps} 
