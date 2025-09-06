@@ -6,6 +6,7 @@ import LandingPage from './pages/LandingPage';
 import ChatPage from './pages/ChatPage';
 import ViewAllCamps from './components/camp/ViewAllCamps';
 import SmartFeatures from './components/landing/SmartFeatures';
+import BasicMap from './components/map/BasicMap';
 
 function App() {
   const queryClient = new QueryClient();
@@ -21,6 +22,7 @@ function App() {
 
               </Route>
                 <Route path='/chatbot' element={<ChatPage/>} />
+                <Route path='/map' element={<BasicMap/>} />
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import type { Camp } from "../../types/camp.types";
 import CampCards from "./CampCards"
 import { FaPlus, FaSearch } from "react-icons/fa";
+import BasicMap from "../map/BasicMap";
 
 const ViewAllCamps = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -24,7 +25,7 @@ const ViewAllCamps = () => {
     {
       id: 3,
       name: "Women & Child Health Camp",
-      location: "Primary School, Odisha",
+      location: "Primary School",
       organizer: "Red Cross",
       contact: "+91-8765432109",
       description: "Healthcare camp focused on women and children's health, offering vaccinations, maternal health services, and nutrition guidance",
@@ -102,7 +103,7 @@ const ViewAllCamps = () => {
             </div>
             </div>
 
-            <div className="flex-1 overflow-y-auto pr-2 mt-2">
+            <div className="flex-1 overflow-y-auto pr-2">
               <CampCards camps={filteredCamps.length > 0 ? filteredCamps : camps} />
 
               {filteredCamps.length === 0 && (
@@ -116,16 +117,11 @@ const ViewAllCamps = () => {
 
           {/* Right Side - Map */}
           <div className="rounded-xl shadow-gray-400 w-[70%]">
-            <div className="relative h-full">
-              <img 
-                src="https://docs.maptiler.com/leaflet/examples/react/map.png" 
-                alt="Camp locations map" 
-                className="w-full h-full object-cover"
-              />
+            <div className="relative h-full z-0">
+              <BasicMap/>
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
               <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-border/50">
-                <p className="text-sm font-medium text-foreground">Interactive Map</p>
-                <p className="text-xs text-muted-foreground">Showing {camps.length} camp locations</p>
+                
               </div>
             </div>
           </div>

@@ -32,7 +32,7 @@ const CampCards: React.FC<CampCardsProps> = ({camps}) => {
          whileInView={{ opacity: 1, y: 0 }}
          transition={{ duration: 0.5, delay: index * 0.1 }}
          viewport={{ once: true }}
-         className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
+         className="bg-white rounded-2xl overflow-hidden mb-4 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100"
       >
          <div className="p-6">
             <div className="flex flex-col justify-between items-start mb-4">

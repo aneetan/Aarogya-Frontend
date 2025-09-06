@@ -6,3 +6,8 @@
    --primary-lighter: #ed777f;
    --primary-bg: ##FFEFEA;
  }
+
+.leaflet-container {
+  height: 600px;
+  width: 100%;
+}
