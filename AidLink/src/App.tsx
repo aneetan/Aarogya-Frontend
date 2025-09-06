@@ -6,7 +6,7 @@ import LandingPage from './pages/LandingPage';
 import ChatPage from './pages/ChatPage';
 import ViewAllCamps from './components/camp/ViewAllCamps';
 import SmartFeatures from './components/landing/SmartFeatures';
-import BasicMap from './components/map/BasicMap';
+import CampForm from './components/camp/CampForm';
 
 function App() {
   const queryClient = new QueryClient();
@@ -19,14 +19,15 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/camps" element={<ViewAllCamps />} />
                 <Route path="/about" element={<SmartFeatures />} />
-
+                <Route path="/add-camp" element={<CampForm />} />
               </Route>
                 <Route path='/chatbot' element={<ChatPage/>} />
-                <Route path='/map' element={<BasicMap/>} />
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>
     </>
+
+  
   )
 }
 

@@ -62,20 +62,6 @@ const CampCards: React.FC<CampCardsProps> = ({camps, onViewLocation}) => {
                <span>{camp.starting_time} - {camp.ending_time}</span>
             </div>
             </div>
-            
-            <div className="mb-5">
-            <h4 className="font-semibold text-gray-700 mb-2">Services Offered:</h4>
-            <div className="flex flex-wrap gap-2">
-               {camp.services.map((service, idx) => (
-                  <span 
-                  key={idx} 
-                  className="px-3 py-1 bg-blue-50 text-[var(--primary-color)] text-xs font-medium rounded-full"
-                  >
-                  {service}
-                  </span>
-               ))}
-            </div>
-            </div>
 
             <div className='flex gap-2 items-center'>
             <button 

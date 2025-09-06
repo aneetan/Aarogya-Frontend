@@ -22,9 +22,8 @@ const ViewAllCamps = () => {
       days: 2,
       starting_time: "10:00 AM",
       ending_time: "4:00 PM",
-      services: ["Eye Examination", "Cataract Screening", "Free Glasses"],
       lat: 27.667160,
-      long:  85.341324
+      lng:  85.341324
     },
     {
       id: 3,
@@ -37,9 +36,8 @@ const ViewAllCamps = () => {
       days: 2,
       starting_time: "8:00 AM",
       ending_time: "6:00 PM",
-      services: ["Vaccination", "Maternal Health", "Child Nutrition"],
       lat: 20.9517,
-      long: 85.0985
+      lng: 85.0985
     },
     {
       id: 4,
@@ -52,17 +50,13 @@ const ViewAllCamps = () => {
       days: 2,
       starting_time: "10:00 AM",
       ending_time: "4:00 PM",
-      services: ["Dental Checkup", "Tooth Cleaning", "Oral Health Education"],
       lat: 25.0961,
-      long: 85.3131
+      lng: 85.3131
     }
   ];
 
    const filteredCamps = camps.filter(camp => 
-    camp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    camp.services.some(service => 
-      service.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    camp.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Scroll to the selected camp when it changes

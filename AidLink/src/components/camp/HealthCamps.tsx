@@ -22,9 +22,8 @@ const HealthCamps = () => {
     days: 2,
     starting_time: "10:00 AM",
     ending_time: "4:00 PM",
-    services: ["Eye Examination", "Cataract Screening", "Free Glasses"],
     lat: 23.6345,
-    long: 85.3803
+    lng: 85.3803
   },
   {
     id: 3,
@@ -37,9 +36,8 @@ const HealthCamps = () => {
     days: 2,
     starting_time: "8:00 AM",
     ending_time: "6:00 PM",
-    services: ["Vaccination", "Maternal Health", "Child Nutrition"],
     lat: 20.9517,
-    long: 85.0985
+    lng: 85.0985
   },
   {
     id: 4,
@@ -52,9 +50,8 @@ const HealthCamps = () => {
     days: 2,
     starting_time: "10:00 AM",
     ending_time: "4:00 PM",
-    services: ["Dental Checkup", "Tooth Cleaning", "Oral Health Education"],
     lat: 25.0961,
-    long: 85.3131
+    lng: 85.3131
   }
 ];
   return (
@@ -86,7 +83,7 @@ const HealthCamps = () => {
         >
           <div></div>
           <button
-            onClick={() => setShowAddForm(!showAddForm)}
+            onClick={() => navigate('/add-camp')}
             className="px-4 py-3 rounded-xl text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white font-medium flex items-center
             shadow-md hover:shadow-lg transition-all duration-300 border-2 border-[var(--primary-color)]"
           >

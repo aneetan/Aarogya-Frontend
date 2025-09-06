@@ -9,7 +9,8 @@ export interface Camp {
    days: number;
    starting_time: string,
    ending_time: string,
-   services: string[],
    lat: number;
-   long: number;
+   lng: number;
 }
+
+export type CampFormData = Omit<Camp, 'id'>;

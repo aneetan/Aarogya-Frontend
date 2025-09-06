@@ -43,7 +43,7 @@ interface FlyToLocationProps {
   zoomLevel: number;
 }
 
-const FlyToLocation: React.FC<FlyToLocationProps> = ({ location, zoomLevel }) => {
+export const FlyToLocation: React.FC<FlyToLocationProps> = ({ location, zoomLevel }) => {
   const map = useMap();
 
   useEffect(() => {
@@ -82,7 +82,6 @@ const BasicMap: React.FC<BasicMapProps> = ({camps, onCampSelect, selectedCamp}) 
   });
 
   const [nearbyCamps, setNearbyCamps] = useState<Camp[]>([]);
-  // const [selectedCamp, setSelectedCamp] = useState<Camp | null>(null);
   const ZOOM_LEVEL = 13;
   const mapRef = useRef<L.Map>(null);
   const location = useGeoLocation();
@@ -100,7 +99,7 @@ const BasicMap: React.FC<BasicMapProps> = ({camps, onCampSelect, selectedCamp}) 
           Number(userLat),
           Number(userLng),
           camp.lat,
-          camp.long
+          camp.lng
         );
         return distance <= radius;
       });
@@ -113,7 +112,7 @@ const BasicMap: React.FC<BasicMapProps> = ({camps, onCampSelect, selectedCamp}) 
   useEffect(() => {
     if (location.loaded && !location.error && location.coordinates && selectedCamp && mapRef.current) {
       const userLatLng = L.latLng(Number(location.coordinates.lat), Number(location.coordinates.lng));
-      const selectedLatLng = L.latLng(selectedCamp.lat, selectedCamp.long);
+      const selectedLatLng = L.latLng(selectedCamp.lat, selectedCamp.lng);
 
       // Remove existing routing control if any
       if (routingControlRef.current) {
@@ -146,11 +145,15 @@ const BasicMap: React.FC<BasicMapProps> = ({camps, onCampSelect, selectedCamp}) 
 
   useEffect(() => {
     if (selectedCamp && mapRef.current) {
-      mapRef.current.flyTo(
-        [Number(selectedCamp.lat), Number(selectedCamp.long)],
-        15, // Zoom level
-        { animate: true, duration: 1.5 }
-      );
+      if (!isNaN(selectedCamp.lat) && !isNaN(selectedCamp.lng)) {
+        mapRef.current.flyTo(
+          [selectedCamp.lat, selectedCamp.lng],
+          13,
+          { animate: true, duration: 1.5 }
+        );
+      } else {
+        console.error('Invalid coordinates for selected camp:', selectedCamp);
+      }
     }
   }, [selectedCamp]);
 
@@ -185,12 +188,12 @@ const BasicMap: React.FC<BasicMapProps> = ({camps, onCampSelect, selectedCamp}) 
         {/* Nearby camps markers */}
         {nearbyCamps.map((camp) => (
           <Marker
-            position={[camp.lat, camp.long]}
+            position={[camp.lat, camp.lng]}
             icon={markerIcon}
             key={camp.id}
             eventHandlers={{
               click: () => {
-                // setSelectedCamp(camp);
+                selectedCamp = camp;
                 onCampSelect(camp); // Notify parent component
               },
             }}
