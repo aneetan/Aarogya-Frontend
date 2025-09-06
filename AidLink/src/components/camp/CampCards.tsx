@@ -5,7 +5,7 @@ import { FaCalendarAlt, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 import CampDetails from './CampDetails';
 
 interface CampCardsProps {
-   camps: Camp[];
+  camps: Camp[];
 }
 
 const CampCards: React.FC<CampCardsProps> = ({camps}) => {

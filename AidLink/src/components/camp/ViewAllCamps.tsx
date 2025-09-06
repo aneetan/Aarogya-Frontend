@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Camp } from "../../types/camp.types";
 import CampCards from "./CampCards"
-import { FaPlus, FaSearch } from "react-icons/fa";
+import { FaArrowLeft, FaPlus, FaSearch } from "react-icons/fa";
 import BasicMap from "../map/BasicMap";
 
 const ViewAllCamps = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCamp, setSelectedCamp] = useState<Camp | null>(null);
+  const [showAllCamps, setShowAllCamps] = useState(true);
+  const campListRef = useRef<HTMLDivElement>(null);
     const camps: Camp[] = [
     {
       id: 2,
@@ -19,8 +22,8 @@ const ViewAllCamps = () => {
       starting_time: "10:00 AM",
       ending_time: "4:00 PM",
       services: ["Eye Examination", "Cataract Screening", "Free Glasses"],
-      lat: 23.6345,
-      long: 85.3803
+      lat: 27.667160,
+      long:  85.341324
     },
     {
       id: 3,
@@ -61,6 +64,38 @@ const ViewAllCamps = () => {
     )
   );
 
+  // Scroll to the selected camp when it changes
+  useEffect(() => {
+    if (selectedCamp && campListRef.current) {
+      const campElement = document.getElementById(`camp-${selectedCamp.id}`);
+      if (campElement) {
+        campElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        
+        // Add highlight effect
+        campElement.classList.add('bg-blue-50', 'border-blue-300');
+        
+        // Remove highlight after some time
+        setTimeout(() => {
+          campElement.classList.remove('bg-blue-50', 'border-blue-300');
+        }, 2000);
+      }
+    }
+  }, [selectedCamp]);
+
+   const handleCampSelect = (camp: Camp | null) => {
+    setSelectedCamp(camp);
+    setShowAllCamps(false);
+  };
+
+  const handleBackToAllCamps = () => {
+    setSelectedCamp(null);
+    setShowAllCamps(true);
+  };
+
+   const displayCamps = showAllCamps ? 
+    (filteredCamps.length > 0 ? filteredCamps : camps) : 
+    (selectedCamp ? [selectedCamp] : []);
+
   return (
     <>
      <section className="min-h-screen bg-gray-50 mb-12">
@@ -86,27 +121,43 @@ const ViewAllCamps = () => {
           <div className="bg-white rounded-xl shadow-lg md:w-[30%] w-full p-6 h-full flex flex-col">
             <div className="flex flex-col h-full">
               <div className="sticky top-0 bg-white pb-4 z-10">
-              <h2 className="font-bold text-2xl text-[var(--primary-color)] mb-4"> Available Health Camps </h2>
+
+                {!showAllCamps ? (
+                  <button 
+                    onClick={handleBackToAllCamps}
+                    className="flex items-center text-[var(--primary-color)] mb-4 font-medium"
+                  >
+                    <FaArrowLeft className="mr-2" />
+                    Back to all camps
+                  </button>
+                ) : (
+                  <h2 className="font-bold text-2xl text-[var(--primary-color)] mb-4"> 
+                    Available Health Camps 
+                  </h2>
+                )}
+              {/* <h2 className="font-bold text-2xl text-[var(--primary-color)] mb-4"> Available Health Camps </h2> */}
               
               {/* Search */}
-            <div className="relative mb-4">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                 <FaSearch className="text-gray-500"/>
-              </div>
-              <input
-                type="text"
-                placeholder="Search camps by name or services"
-                className="w-full pl-10 pr-4 py-2 border-gray-400 border-2 rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
+             {showAllCamps && (
+                  <div className="relative mb-4">
+                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                      <FaSearch className="text-gray-500"/>
+                    </div>
+                    <input
+                      type="text"
+                      placeholder="Search camps by name or services"
+                      className="w-full pl-10 pr-4 py-2 border-gray-400 border-2 rounded-lg focus:ring-2 focus:ring-[var(--primary-color)] focus:border-transparent"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                  </div>
+                )}
             </div>
 
             <div className="flex-1 overflow-y-auto pr-2">
-              <CampCards camps={filteredCamps.length > 0 ? filteredCamps : camps} />
+               <CampCards camps={displayCamps} />
 
-              {filteredCamps.length === 0 && (
+               {showAllCamps && filteredCamps.length === 0 && (
                 <div className="text-center py-8 text-gray-500">
                   No health camps found matching your search.
                 </div>
@@ -118,7 +169,11 @@ const ViewAllCamps = () => {
           {/* Right Side - Map */}
           <div className="rounded-xl shadow-gray-400 w-[70%]">
             <div className="relative h-full z-0">
-              <BasicMap/>
+               <BasicMap 
+                camps={camps} 
+                onCampSelect={handleCampSelect}
+                selectedCamp={selectedCamp}
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
               <div className="absolute bottom-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-3 border border-border/50">
                 

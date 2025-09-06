@@ -16,6 +16,12 @@ interface MapPosition {
   lng: number;
 }
 
+interface BasicMapProps {
+  camps: Camp[];
+  onCampSelect : (camp: Camp | null) => void;
+  selectedCamp: Camp | null;
+}
+
 const markerIcon = new L.Icon({
   iconUrl: "https://cdn-icons-png.flaticon.com/512/5081/5081368.png",
   iconSize: [35, 45],
@@ -69,66 +75,18 @@ const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: numbe
   return R * c;
 };
 
-const BasicMap: React.FC = () => {
+const BasicMap: React.FC<BasicMapProps> = ({camps, onCampSelect, selectedCamp}) => {
   const [center] = useState<MapPosition>({
     lat: 27.64256108005826,
     lng: 85.32555398598879
   });
 
   const [nearbyCamps, setNearbyCamps] = useState<Camp[]>([]);
-  const [selectedCamp, setSelectedCamp] = useState<Camp | null>(null);
+  // const [selectedCamp, setSelectedCamp] = useState<Camp | null>(null);
   const ZOOM_LEVEL = 13;
   const mapRef = useRef<L.Map>(null);
   const location = useGeoLocation();
   const routingControlRef = useRef<L.Routing.Control | null>(null);
-
-  const camps: Camp[] = [
-    {
-      id: 2,
-      name: "Eye Care Camp",
-      location: "Community Center, Jharkhand",
-      organizer: "Red Cross",
-      contact: "+91-9876543210",
-      description: "Free eye care camp providing comprehensive eye examinations, cataract screening, and free glasses for those in need",
-      date: new Date("2024-01-18"),
-      days: 2,
-      starting_time: "10:00 AM",
-      ending_time: "4:00 PM",
-      services: ["Eye Examination", "Cataract Screening", "Free Glasses"],
-      lat: 23.6345,
-      long: 85.3803
-    },
-    {
-      id: 3,
-      name: "Women & Child Health Camp",
-      location: "Primary School, Odisha",
-      organizer: "Red Cross",
-      contact: "+91-8765432109",
-      description: "Healthcare camp focused on women and children's health, offering vaccinations, maternal health services, and nutrition guidance",
-      date: new Date("2024-01-20"),
-      days: 2,
-      starting_time: "8:00 AM",
-      ending_time: "6:00 PM",
-      services: ["Vaccination", "Maternal Health", "Child Nutrition"],
-      lat: 20.9517,
-      long: 85.0985
-    },
-    {
-      id: 4,
-      name: "Dental Care Camp",
-      location: "Rural Health Center, Bihar",
-      organizer: "Red Cross",
-      contact: "+91-7654321098",
-      description: "Free dental care camp providing comprehensive dental checkups, cleaning services, and oral health education",
-      date: new Date("2024-01-22"),
-      days: 2,
-      starting_time: "10:00 AM",
-      ending_time: "4:00 PM",
-      services: ["Dental Checkup", "Tooth Cleaning", "Oral Health Education"],
-      lat: 27.667160,
-      long: 85.341324
-    }
-  ];
 
   // Filter nearby camps when location changes
   useEffect(() => {
@@ -221,7 +179,10 @@ const BasicMap: React.FC = () => {
             icon={markerIcon}
             key={camp.id}
             eventHandlers={{
-              click: () => setSelectedCamp(camp),
+              click: () => {
+                // setSelectedCamp(camp);
+                onCampSelect(camp); // Notify parent component
+              },
             }}
           >
             <Popup>
