@@ -111,7 +111,7 @@ const Navbar = () => {
                 <li key={item.key}
                 onClick={() => handleNavigate(item.path)}
                 className={`${isActive === item.key ? 'text-[var(--primary-color)] font-semibold': ''} 
-                cursor-pointer  hover:text-[var(--primary-color)]`}
+                cursor-pointer  hover:text-[var(--primary-color)] text-lg`}
                 >
                   <NavLink to={item.path} end
                   onClick={() => handleActiveState(item.key)}> {item.label}

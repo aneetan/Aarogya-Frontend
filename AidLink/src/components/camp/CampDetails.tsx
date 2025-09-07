@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaTimes } from 'react-icons/fa';
+import { FaClock, FaMapMarkerAlt, FaTimes } from 'react-icons/fa';
 import type { Camp } from '../../types/camp.types';
 
 interface CampDetailsProps {
@@ -35,12 +35,11 @@ const CampDetails: React.FC<CampDetailsProps> = ({ camp, onClose }) => {
                   <span>{camp.location}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
-                  <FaCalendarAlt className="mr-2 text-[var(--primary-color)]" />
-                  <span>{new Date(camp.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                </div>
-                <div className="flex items-center text-gray-600">
                   <FaClock className="mr-2 text-[var(--primary-color)]" />
                   <span>{camp.starting_time} - {camp.ending_time} ({camp.days} day{camp.days > 1 ? 's' : ''})</span>
+                </div>
+                <div className="text-gray-600">
+                  <span> <span className="font-medium">Starting From:</span> {new Date(camp.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
                 </div>
                 <div className="text-gray-600">
                   <span className="font-medium">Organized by:</span> {camp.organizer}
@@ -57,36 +56,6 @@ const CampDetails: React.FC<CampDetailsProps> = ({ camp, onClose }) => {
           <div className="mb-6">
             <h3 className="text-lg font-semibold text-gray-700 mb-2">Description</h3>
             <p className="text-gray-600">{camp.description}</p>
-          </div>
-
-          <div className="mb-6">
-            <h3 className="text-lg font-semibold text-gray-700 mb-2">Services Offered</h3>
-            <div className="flex flex-wrap gap-2">
-              {camp.services.map((service, idx) => (
-                <span 
-                  key={idx} 
-                  className="px-3 py-1 bg-blue-50 text-[var(--primary-color)] font-medium rounded-full"
-                >
-                  {service}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-3">
-            <button 
-              onClick={onClose}
-              className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg
-              hover:bg-gray-100 transition-colors"
-            >
-              Close
-            </button>
-            <button
-              className="px-4 py-2 bg-[var(--primary-color)] hover:bg-[var(--primary-dark)] 
-              text-white rounded-lg transition-colors"
-            >
-              View Location
-            </button>
           </div>
         </div>
       </motion.div>
