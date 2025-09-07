@@ -7,12 +7,14 @@ import ChatPage from './pages/ChatPage';
 import ViewAllCamps from './components/camp/ViewAllCamps';
 import SmartFeatures from './components/landing/SmartFeatures';
 import CampForm from './components/camp/CampForm';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   const queryClient = new QueryClient();
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        <ToastContainer/>
         <BrowserRouter>
           <Routes>
               <Route path='/' element={<CustomLayout/>}>

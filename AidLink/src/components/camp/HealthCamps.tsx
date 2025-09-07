@@ -9,48 +9,6 @@ const HealthCamps = () => {
   const navigate = useNavigate();
 
   const upcomingCamps: Camp[] = [
-  {
-    id: 2,
-    name: "Eye Care Camp",
-    location: "Community Center, Jharkhand",
-    organizer: "Red Cross",
-    contact: "+91-9876543210",
-    description: "Free eye care camp providing comprehensive eye examinations, cataract screening, and free glasses for those in need",
-    date: new Date("2024-01-18"),
-    days: 2,
-    starting_time: "10:00 AM",
-    ending_time: "4:00 PM",
-    lat: 23.6345,
-    lng: 85.3803
-  },
-  {
-    id: 3,
-    name: "Women & Child Health Camp",
-    location: "Primary School, Odisha",
-    organizer: "Red Cross",
-    contact: "+91-8765432109",
-    description: "Healthcare camp focused on women and children's health, offering vaccinations, maternal health services, and nutrition guidance",
-    date: new Date("2024-01-20"),
-    days: 2,
-    starting_time: "8:00 AM",
-    ending_time: "6:00 PM",
-    lat: 20.9517,
-    lng: 85.0985
-  },
-  {
-    id: 4,
-    name: "Dental Care Camp",
-    location: "Rural Health Center, Bihar",
-    organizer: "Red Cross",
-    contact: "+91-7654321098",
-    description: "Free dental care camp providing comprehensive dental checkups, cleaning services, and oral health education",
-    date: new Date("2024-01-22"),
-    days: 2,
-    starting_time: "10:00 AM",
-    ending_time: "4:00 PM",
-    lat: 25.0961,
-    lng: 85.3131
-  }
 ];
   return (
     <section className="w-full py-12 px-8 lg:px-8 bg-gray-100">

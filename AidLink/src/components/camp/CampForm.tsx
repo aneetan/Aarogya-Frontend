@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import type { CampFormData } from '../../types/camp.types';
 import MapPicker from '../map/MapPicker';
 import { validateForm } from '../../utils/validateForm.utils';
+import { useMutation } from '@tanstack/react-query';
+import { addCamp } from '../../api/camp.api';
+import { showErrorToast, showSuccessToast } from '../../utils/toast.utils';
+import { useNavigate } from 'react-router';
 
 const CampForm: React.FC = () => {
   const [formData, setFormData] = useState<CampFormData>({
@@ -15,11 +19,12 @@ const CampForm: React.FC = () => {
     starting_time: '10:00',
     ending_time: '16:00',
     lat: 0,
-    lng: 0
+    lng: 0,
+    status: 'upcoming'
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const navigate = useNavigate();
 
    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
@@ -40,7 +45,7 @@ const CampForm: React.FC = () => {
     }));
     
     // Clear error when user starts typing
-    if (errors[name] && isSubmitted) {
+    if (errors[name]) {
       setErrors(prev => {
         const newErrors = { ...prev };
         delete newErrors[name];
@@ -56,7 +61,7 @@ const CampForm: React.FC = () => {
       lng
     }));
 
-     if ((errors.lat || errors.lng) && isSubmitted) {
+     if ((errors.lat || errors.lng)) {
       setErrors(prev => {
         const newErrors = { ...prev };
         delete newErrors.lat;
@@ -71,13 +76,44 @@ const CampForm: React.FC = () => {
     setErrors(validationError);
     return  Object.keys(validationError).length === 0;
   };
+  
+  const addCampMutation = useMutation({
+      mutationFn: addCamp,
+      onSuccess: () => {
+         showSuccessToast("Camp Added Successfully");
+         navigate('/camps')
+      },
+      onError: (error: any) => {
+         showErrorToast(error.response?.data);
+         if (error.response?.data?.message) {
+         setErrors({ submit: error.response.data.message });
+         } else {
+         setErrors({ submit: 'Failed to create camp. Please try again.' });
+         }
+      }
+  })
+  const resetForm = ()=> {
+    setFormData({
+      name: '',
+      location: '',
+      organizer: '',
+      contact: '',
+      description: '',
+      date: new Date(),
+      days: 1,
+      starting_time: '10:00',
+      ending_time: '16:00',
+      lat: 0,
+      lng: 0,
+      status: 'upcoming'
+   });
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
     if(!validateFormData()) return;
-    console.log('Form submitted:', formData);
-    
+    addCampMutation.mutate(formData);
+    resetForm();
   };
 
   return (
