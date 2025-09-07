@@ -7,10 +7,8 @@ import NoHealthCamps from './NoHealthCamps';
 import { useQuery } from '@tanstack/react-query';
 import type { AxiosError, AxiosResponse } from 'axios';
 import { viewRecentCamps } from '../../api/camp.api';
-import { useState } from 'react';
 
 const HealthCamps = () => {
-  const [selectedCamp, setSelectedCamp] = useState<Camp | null>(null);
 
   const navigate = useNavigate();
   const { data, isLoading, error } = useQuery<AxiosResponse<Camp[]>, AxiosError, Camp[]>({
@@ -22,10 +20,6 @@ const HealthCamps = () => {
 
   if (isLoading) return <div>Loading camps...</div>;
   if (error) return <div>Error: {error.message}</div>;
-
-  const handleViewLocation = (camp: Camp) => {
-    setSelectedCamp(camp);
-  };
 
   return (
     <section className="w-full py-12 px-8 lg:px-8 bg-gray-100">
@@ -67,7 +61,7 @@ const HealthCamps = () => {
 
         {/* Upcoming Camps */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-           <CampCards camps={upcomingCamps} onViewLocation={handleViewLocation} />
+           <CampCards camps={upcomingCamps} />
         </div>
 
         {upcomingCamps.length === 0 && (
