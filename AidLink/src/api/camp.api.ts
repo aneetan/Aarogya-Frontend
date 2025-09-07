@@ -23,3 +23,10 @@ export const viewCamps = async (): Promise<AxiosResponse> => {
 
   return response.data;
 }
+
+export const viewRecentCamps = async (): Promise<AxiosResponse> => {
+  const response = await axios.get(`${API_URL}/camp/recent`);
+
+  return response.data;
+}
+
