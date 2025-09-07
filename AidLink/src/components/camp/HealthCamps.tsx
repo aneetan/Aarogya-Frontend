@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 import { FaPlus } from 'react-icons/fa';
 import type { Camp } from '../../types/camp.types';
 import { useNavigate } from 'react-router';
@@ -7,7 +6,6 @@ import CampCards from './CampCards';
 import NoHealthCamps from './NoHealthCamps';
 
 const HealthCamps = () => {
-  const [showAddForm, setShowAddForm] = useState(false);
   const navigate = useNavigate();
 
   const upcomingCamps: Camp[] = [

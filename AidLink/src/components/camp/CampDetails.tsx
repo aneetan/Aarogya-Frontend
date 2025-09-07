@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { FaCalendarAlt, FaClock, FaMapMarkerAlt, FaTimes } from 'react-icons/fa';
+import { FaClock, FaMapMarkerAlt, FaTimes } from 'react-icons/fa';
 import type { Camp } from '../../types/camp.types';
 
 interface CampDetailsProps {

@@ -154,22 +154,6 @@ const BasicMap: React.FC<BasicMapProps> = ({ camps, onCampSelect, selectedCamp }
     }
   }, [location, selectedCamp]);
 
-  // Get user position
-  const userPosition =
-    location.loaded && 
-    !location.error && 
-    location.coordinates &&
-    isValidCoordinate(Number(location.coordinates.lat), Number(location.coordinates.lng))
-      ? [Number(location.coordinates.lat), Number(location.coordinates.lng)] as [number, number]
-      : null;
-
-  // Get camp position
-  const campPosition =
-    selectedCamp && 
-    isValidCoordinate(selectedCamp.lat, selectedCamp.lng)
-      ? [selectedCamp.lat, selectedCamp.lng] as [number, number]
-      : null;
-
   return (
     <>
       <MapContainer
