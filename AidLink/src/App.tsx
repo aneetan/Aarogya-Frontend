@@ -10,6 +10,7 @@ import CampForm from './components/camp/CampForm';
 import { ToastContainer } from 'react-toastify';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import OtpVerify from './pages/OtpVerify';
 
 function App() {
   const queryClient = new QueryClient();
@@ -29,6 +30,9 @@ function App() {
 
                 <Route path='/register' element={<Register/>} />
                 <Route path='/login' element={<Login/>} />
+                <Route path='/verify-otp' element={<OtpVerify/>} />
+
+                {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
 
           </Routes>
         </BrowserRouter>

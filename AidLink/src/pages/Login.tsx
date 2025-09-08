@@ -1,6 +1,12 @@
 import { useState, type FormEvent } from "react"
-import type { LoginProps } from "../types/auth.types";
+import type { LoginProps, LoginResponse } from "../types/auth.types";
 import Logo from "../components/Logo";
+import { loginUser } from "../api/user.api";
+import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router";
+import type { AxiosError } from "axios";
+import { showErrorToast } from "../utils/toast.utils";
+import { useAuth } from "../hooks/useAuth";
 
  const Login: React.FC = () => {
     const [formData, setFormData] = useState<LoginProps>({
@@ -8,24 +14,23 @@ import Logo from "../components/Logo";
         password: ''
     });
     const [error, setError] = useState<string>('');
-    const [loading, setIsLoading] = useState(false);
-   //  const navigate = useNavigate();
-   //   const { login } = useAuth();
+    const navigate = useNavigate();
+     const { login } = useAuth();
 
-   //  const mutation = useMutation<LoginResponse, AxiosError, LoginProps>({
-   //      mutationFn: loginUser,
-   //      onSuccess: (data) => {
-   //          login(data.accessToken, data.id);
-   //          navigate("/dashboard")
-   //      },
-   //      onError: (err) => {
-   //          if(err.response){
-   //              console.log("Error status", err.response?.status);
-   //              console.log("Error message", err.response?.data);
-   //              showErrorToast("Login Failed")
-   //          }
-   //      }
-   //  });
+    const mutation = useMutation<LoginResponse, AxiosError, LoginProps>({
+        mutationFn: loginUser,
+        onSuccess: (data) => {
+            login(data.accessToken, data.id);
+            navigate("/")
+        },
+        onError: (err) => {
+            if(err.response){
+                console.log("Error status", err.response?.status);
+                console.log("Error message", err.response?.data);
+                showErrorToast("Login Failed")
+            }
+        }
+    });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({...formData, [e.target.name]: e.target.value});
@@ -34,7 +39,7 @@ import Logo from "../components/Logo";
 
     const handleLogin = (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-      //   mutation.mutate(formData);
+        mutation.mutate(formData);
     }
 
   return (
@@ -122,11 +127,11 @@ import Logo from "../components/Logo";
 
                             <button
                                 type="submit"
-                                disabled={loading}
+                                disabled={mutation.isPending}
                                 className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-[var(--primary-color)]
-                                  hover:bg-[var(--primary-dark)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)] transition ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
+                                  hover:bg-[var(--primary-dark)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[var(--primary-color)] transition ${mutation.isPending ? 'opacity-70 cursor-not-allowed' : ''}`}
                             >
-                                {loading ? (
+                                {mutation.isPending ? (
                                     <>
                                         <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
