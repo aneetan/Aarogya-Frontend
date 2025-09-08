@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router'
 import './App.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import CustomLayout from './components/landing/CustomLayout';
@@ -11,6 +11,7 @@ import { ToastContainer } from 'react-toastify';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import OtpVerify from './pages/OtpVerify';
+import ProtectedRoute from './utils/ProtectedRoute';
 
 function App() {
   const queryClient = new QueryClient();
@@ -24,7 +25,9 @@ function App() {
                 <Route path="/" element={<LandingPage />} />
                 <Route path="/camps" element={<ViewAllCamps />} />
                 <Route path="/about" element={<SmartFeatures />} />
-                <Route path="/add-camp" element={<CampForm />} />
+                <Route element={<ProtectedRoute requiredRole='local_body'/>}>
+                  <Route path="/add-camp" element={<CampForm />} />
+                </Route>
               </Route>
                 <Route path='/chatbot' element={<ChatPage/>} />
 
@@ -32,7 +35,7 @@ function App() {
                 <Route path='/login' element={<Login/>} />
                 <Route path='/verify-otp' element={<OtpVerify/>} />
 
-                {/* <Route path="*" element={<Navigate to="/" replace />} /> */}
+                <Route path="*" element={<Navigate to="/" replace />} />
 
           </Routes>
         </BrowserRouter>
