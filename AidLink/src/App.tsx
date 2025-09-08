@@ -7,6 +7,8 @@ import ChatPage from './pages/ChatPage';
 import ViewAllCamps from './components/camp/ViewAllCamps';
 import SmartFeatures from './components/landing/SmartFeatures';
 import CampForm from './components/camp/CampForm';
+import Register from './pages/Register';
+import Login from './pages/Login';
 
 function App() {
   const queryClient = new QueryClient();
@@ -22,6 +24,10 @@ function App() {
                 <Route path="/add-camp" element={<CampForm />} />
               </Route>
                 <Route path='/chatbot' element={<ChatPage/>} />
+
+                <Route path='/register' element={<Register/>} />
+                <Route path='/login' element={<Login/>} />
+
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>

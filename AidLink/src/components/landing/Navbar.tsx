@@ -7,6 +7,7 @@ const AppRoutes = {
   FIRST_AID_CHAT: "/chatbot",
   HEALTH_CAMPS: "/camps",
   ABOUT: "/about",
+  ADD_CAMPS: "/add-camp"
 } as const;
 
 interface NavItem {
@@ -30,6 +31,7 @@ const Navbar = () => {
     { key: "FIRST_AID_CHAT", label: "Chatbot", path: AppRoutes.FIRST_AID_CHAT },
     { key: "HEALTH_CAMPS", label: "Health Camps", path: AppRoutes.HEALTH_CAMPS },
     { key: "ABOUT", label: "About", path: AppRoutes.ABOUT },
+    { key: "ADD_CAMPS", label: "Add Camps", path: AppRoutes.ADD_CAMPS },
   ];
 
   const handleActiveState = (itemName : NavRoutes):void => {
@@ -62,7 +64,9 @@ const Navbar = () => {
       setIsActive("ABOUT");
     } else if (hash === AppRoutes.HEALTH_CAMPS) {
       setIsActive("HEALTH_CAMPS");
-    }
+    } else if (hash === AppRoutes.ADD_CAMPS) {
+      setIsActive("ADD_CAMPS");
+    } 
   }, [location]);
 
   // Scroll behavior for hash links
@@ -129,7 +133,7 @@ const Navbar = () => {
                <button
                   className="border-[var(--primary-color)] border-2 px-6 ml-4 py-2 rounded-xl text-[var(--primary-color)]
                   font-semibold hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/register')}
                 > Signup </button>
 
                 <button
