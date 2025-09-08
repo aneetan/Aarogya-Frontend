@@ -3,6 +3,9 @@ import type { Camp } from "../../types/camp.types";
 import CampCards from "./CampCards"
 import { FaArrowLeft, FaPlus, FaSearch } from "react-icons/fa";
 import BasicMap from "../map/BasicMap";
+import { useQuery } from "@tanstack/react-query";
+import type { AxiosError, AxiosResponse } from "axios";
+import { viewCamps } from "../../api/camp.api";
 
 const ViewAllCamps = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -10,53 +13,18 @@ const ViewAllCamps = () => {
   const [showAllCamps, setShowAllCamps] = useState(true);
 
   const campListRef = useRef<HTMLDivElement>(null);
-  const camps: Camp[] = [
-    {
-      id: 2,
-      name: "Eye Care Camp",
-      location: "Community Center, Jharkhand",
-      organizer: "Red Cross",
-      contact: "+91-9876543210",
-      description: "Free eye care camp providing comprehensive eye examinations, cataract screening, and free glasses for those in need",
-      date: new Date("2024-01-18"),
-      days: 2,
-      starting_time: "10:00 AM",
-      ending_time: "4:00 PM",
-      lat: 27.667160,
-      lng:  85.341324
-    },
-    {
-      id: 3,
-      name: "Women & Child Health Camp",
-      location: "Primary School",
-      organizer: "Red Cross",
-      contact: "+91-8765432109",
-      description: "Healthcare camp focused on women and children's health, offering vaccinations, maternal health services, and nutrition guidance",
-      date: new Date("2024-01-20"),
-      days: 2,
-      starting_time: "8:00 AM",
-      ending_time: "6:00 PM",
-      lat: 20.9517,
-      lng: 85.0985
-    },
-    {
-      id: 4,
-      name: "Dental Care Camp",
-      location: "Rural Health Center, Bihar",
-      organizer: "Red Cross",
-      contact: "+91-7654321098",
-      description: "Free dental care camp providing comprehensive dental checkups, cleaning services, and oral health education",
-      date: new Date("2024-01-22"),
-      days: 2,
-      starting_time: "10:00 AM",
-      ending_time: "4:00 PM",
-      lat: 25.0961,
-      lng: 85.3131
-    }
-  ];
+  const { data, isLoading, error } = useQuery<AxiosResponse<Camp[]>, AxiosError, Camp[]>({
+    queryKey: ['camps'],
+    queryFn: viewCamps,
+  });
 
-   const filteredCamps = camps.filter(camp => 
-    camp.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const camps = data || []  
+
+  const filteredCamps = camps.filter(camp => 
+    camp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    camp.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    camp.organizer.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    camp.description.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   // Scroll to the selected camp when it changes
@@ -95,6 +63,10 @@ const ViewAllCamps = () => {
    const displayCamps = showAllCamps ? 
     (filteredCamps.length > 0 ? filteredCamps : camps) : 
     (selectedCamp ? [selectedCamp] : []);
+
+    
+   if (isLoading) return <div>Loading camps...</div>;
+   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <>
@@ -183,7 +155,7 @@ const ViewAllCamps = () => {
           <div className="hidden lg:block rounded-xl shadow-gray-400 w-[70%]">
             <div className="relative h-full z-0">
                <BasicMap 
-                camps={camps} 
+                camps={displayCamps} 
                 onCampSelect={handleCampSelect}
                 selectedCamp={selectedCamp}
               />

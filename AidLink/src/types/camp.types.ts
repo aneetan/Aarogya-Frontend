@@ -1,3 +1,5 @@
+type StatusProps = "upcoming" | "active" | "expired"
+
 export interface Camp {
    id: number;
    name: string;
@@ -11,6 +13,7 @@ export interface Camp {
    ending_time: string,
    lat: number;
    lng: number;
+   status: StatusProps; 
 }
 
 export type CampFormData = Omit<Camp, 'id'>;

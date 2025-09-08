@@ -7,6 +7,7 @@ import ChatPage from './pages/ChatPage';
 import ViewAllCamps from './components/camp/ViewAllCamps';
 import SmartFeatures from './components/landing/SmartFeatures';
 import CampForm from './components/camp/CampForm';
+import { ToastContainer } from 'react-toastify';
 import Register from './pages/Register';
 import Login from './pages/Login';
 
@@ -15,6 +16,7 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
+        <ToastContainer/>
         <BrowserRouter>
           <Routes>
               <Route path='/' element={<CustomLayout/>}>
