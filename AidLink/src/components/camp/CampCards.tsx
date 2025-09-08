@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { Camp } from '../../types/camp.types';
 import { FaCalendarAlt, FaClock, FaMapMarkerAlt } from 'react-icons/fa';
 import CampDetails from './CampDetails';
@@ -17,6 +17,18 @@ const CampCards: React.FC<CampCardsProps> = ({ camps, onViewLocation }) => {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const navigate = useNavigate();
 
+    // Sort camps by status: active first, then upcoming, then expired
+  const sortedCamps = useMemo(() => {
+    const statusOrder = { active: 0, upcoming: 1, expired: 2 };
+    
+    return [...camps].sort((a, b) => {
+      const statusA = getCampStatus(a).status;
+      const statusB = getCampStatus(b).status;
+      
+      return statusOrder[statusA as keyof typeof statusOrder] - statusOrder[statusB as keyof typeof statusOrder];
+    });
+  }, [camps]);
+
   const handleSeeDetails = (camp: Camp) => {
     setSelectedCamp(camp);
     setShowDetailsModal(true);
@@ -24,9 +36,9 @@ const CampCards: React.FC<CampCardsProps> = ({ camps, onViewLocation }) => {
 
   const handleCloseModal = () => {
     setShowDetailsModal(false);
-    setSelectedCamp(null);
+    setSelectedCamp(null); 
   };
-
+ 
   const handleViewLocation = (camp: Camp) => {
     if (onViewLocation) {
       onViewLocation(camp);
@@ -35,7 +47,7 @@ const CampCards: React.FC<CampCardsProps> = ({ camps, onViewLocation }) => {
 
   return (
     <>
-      {camps.map((camp, index) => {
+      {sortedCamps.map((camp, index) => {
         const { status, label } = getCampStatus(camp);
         const formattedStartTime = formatTimeToAMPM(camp.starting_time);
         const formattedEndTime = formatTimeToAMPM(camp.ending_time);

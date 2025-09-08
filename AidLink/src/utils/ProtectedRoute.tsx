@@ -11,7 +11,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({requiredRole}) => {
     const token = localStorage.getItem("token");
     const is_role = getRoleFromToken(token!);
 
-
     if(!isAuthenticated){
         return <Navigate to={'/login'} replace/>;
     }

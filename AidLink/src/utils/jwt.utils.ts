@@ -44,5 +44,5 @@ export const getRoleFromToken = (token: string) => {
   if (!token) return null;
   
   const decoded = decodeToken(token);
-  return decoded?.role || null;
+  return decoded?.user?.role || null;
 };

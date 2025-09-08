@@ -12,6 +12,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import OtpVerify from './pages/OtpVerify';
 import ProtectedRoute from './utils/ProtectedRoute';
+import UnauthorizedPage from './pages/UnauthorizedPage';
 
 function App() {
   const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ function App() {
                 <Route path='/login' element={<Login/>} />
                 <Route path='/verify-otp' element={<OtpVerify/>} />
 
+                <Route path='/unauthorized' element={<UnauthorizedPage/>} />
                 <Route path="*" element={<Navigate to="/" replace />} />
 
           </Routes>

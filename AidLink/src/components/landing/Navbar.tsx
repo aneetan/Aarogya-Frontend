@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import { NavLink, useLocation, useNavigate } from "react-router";
 import Logo from "../Logo";
+import { useAuth } from "../../hooks/useAuth";
+import { logoutUser } from "../../api/user.api";
+import { getRoleFromToken } from "../../utils/jwt.utils";
 
 const AppRoutes = {
   HOME: "/",
@@ -25,14 +28,17 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const {userId, logout} = useAuth();
+  const token = localStorage.getItem("token");
+  const role = getRoleFromToken(token!);
 
-  const navItems : NavItem[] = [
-    { key: "HOME", label: "Home", path: AppRoutes.HOME },
-    { key: "FIRST_AID_CHAT", label: "Chatbot", path: AppRoutes.FIRST_AID_CHAT },
-    { key: "HEALTH_CAMPS", label: "Health Camps", path: AppRoutes.HEALTH_CAMPS },
-    { key: "ABOUT", label: "About", path: AppRoutes.ABOUT },
-    { key: "ADD_CAMPS", label: "Add Camps", path: AppRoutes.ADD_CAMPS },
-  ];
+ const navItems: NavItem[] = [
+  { key: "HOME", label: "Home", path: AppRoutes.HOME },
+  { key: "FIRST_AID_CHAT", label: "Chatbot", path: AppRoutes.FIRST_AID_CHAT },
+  { key: "HEALTH_CAMPS", label: "Health Camps", path: AppRoutes.HEALTH_CAMPS },
+  { key: "ABOUT", label: "About", path: AppRoutes.ABOUT },
+  ...(role === "local_body" ? [{ key: "ADD_CAMPS" as const, label: "Add Camps", path: AppRoutes.ADD_CAMPS }] : []),
+];
 
   const handleActiveState = (itemName : NavRoutes):void => {
     setIsActive(itemName);
@@ -47,8 +53,10 @@ const Navbar = () => {
   };
 
   const handleLogout = () =>{
-    localStorage.setItem("isLoggedIn", "false");
-    navigate('/')
+    logoutUser(userId!);
+    logout(userId!);
+    localStorage.removeItem("token");
+    navigate('/');
   }
 
   // Set active route based on current location
@@ -130,18 +138,29 @@ const Navbar = () => {
                 <button onClick={handleLogout}> Logout </button>
               ): (
                <>
-               <button
-                  className="border-[var(--primary-color)] border-2 px-6 ml-4 py-2 rounded-xl text-[var(--primary-color)]
-                  font-semibold hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
-                onClick={() => navigate('/register')}
-                > Signup </button>
+               {!token ? (
+                  <>
+                  <button
+                    className="border-[var(--primary-color)] border-2 px-6 ml-4 py-2 rounded-xl text-[var(--primary-color)]
+                    font-semibold hover:bg-[var(--primary-color)] hover:text-white transition-colors duration-300"
+                  onClick={() => navigate('/register')}
+                  > Signup </button>
 
-                <button
-                  className="bg-[var(--primary-color)] px-6 py-2 border-2 ml-4 rounded-xl text-white font-semibold
-                  hover:bg-[var(--primary-dark)] transition-colors duration-300"
-                onClick={() => navigate('/login')}
-                > Login </button>
+                  <button
+                    className="bg-[var(--primary-color)] px-6 py-2 border-2 ml-4 rounded-xl text-white font-semibold
+                    hover:bg-[var(--primary-dark)] transition-colors duration-300"
+                  onClick={() => navigate('/login')}
+                  > Login </button>
                 </>
+
+               ): (
+                <button
+                    className="bg-[var(--primary-color)] px-6 py-2 border-2 ml-4 rounded-xl text-white font-semibold
+                    hover:bg-[var(--primary-dark)] transition-colors duration-300"
+                    onClick={handleLogout}
+                  > Logout </button>
+               )}
+              </>
               )}
         </div> 
       </div>
