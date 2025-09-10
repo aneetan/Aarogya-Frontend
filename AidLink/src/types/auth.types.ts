@@ -3,6 +3,7 @@ export interface RegisterProps {
     email: string;
     password: string;
     confirmPassword: string;
+    role: 'user' | 'local_body';
     checkbox: boolean;
 }
 
@@ -10,6 +11,7 @@ export interface User {
     id: number;
     fullName: string;
     email: string;
+    role: 'user' | 'local_body';
     password: string;
 }
 

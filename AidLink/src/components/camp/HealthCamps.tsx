@@ -7,9 +7,9 @@ import NoHealthCamps from './NoHealthCamps';
 import { useQuery } from '@tanstack/react-query';
 import type { AxiosError, AxiosResponse } from 'axios';
 import { viewRecentCamps } from '../../api/camp.api';
+import { getRoleFromToken } from '../../utils/jwt.utils';
 
 const HealthCamps = () => {
-
   const navigate = useNavigate();
   const { data, isLoading, error } = useQuery<AxiosResponse<Camp[]>, AxiosError, Camp[]>({
     queryKey: ['camps'],
@@ -20,6 +20,9 @@ const HealthCamps = () => {
 
   if (isLoading) return <div>Loading camps...</div>;
   if (error) return <div>Error: {error.message}</div>;
+
+  const token = localStorage.getItem("token");
+  const role = getRoleFromToken(token!);
 
   return (
     <section className="w-full py-12 px-8 lg:px-8 bg-gray-100">
@@ -41,23 +44,25 @@ const HealthCamps = () => {
         </motion.div>
 
         {/* Add Button */}
-        <motion.div
-          className="flex flex-col sm:flex-row gap-4 mb-10 justify-between items-center"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          viewport={{ once: true }}
-        >
-          <div></div>
-          <button
-            onClick={() => navigate('/add-camp')}
-            className="px-4 py-3 rounded-xl text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white font-medium flex items-center
-            shadow-md hover:shadow-lg transition-all duration-300 border-2 border-[var(--primary-color)]"
+        {role === 'local_body' ? (
+          <motion.div
+            className="flex flex-col sm:flex-row gap-4 mb-10 justify-between items-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            viewport={{ once: true }}
           >
-            <FaPlus className="mr-2" />
-            Add New Camp
-          </button>
-        </motion.div>
+            <div></div>
+            <button
+              onClick={() => navigate('/add-camp')}
+              className="px-4 py-3 rounded-xl text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white font-medium flex items-center
+              shadow-md hover:shadow-lg transition-all duration-300 border-2 border-[var(--primary-color)]"
+            >
+              <FaPlus className="mr-2" />
+              Add New Camp
+            </button>
+          </motion.div>
+        ): ''}
 
         {/* Upcoming Camps */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

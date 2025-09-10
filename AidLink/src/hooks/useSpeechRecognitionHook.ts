@@ -23,14 +23,14 @@ export const useSpeechRecognitionHook = (onAutoSend: () => void) => {
         clearTimeout(silenceTimeout);
       }
 
-      const timeout = setTimeout(() => {
+      const timeout = window.setTimeout(() => {
         if (isListening && transcript.trim()) {
           onAutoSend();
           stopListening();
         }
       }, 2000);
 
-      setSilenceTimeout(timeout);
+      setSilenceTimeout(timeout); 
       return () => {
         if (silenceTimeout) {
           clearTimeout(silenceTimeout);

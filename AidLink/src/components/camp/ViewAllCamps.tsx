@@ -6,11 +6,16 @@ import BasicMap from "../map/BasicMap";
 import { useQuery } from "@tanstack/react-query";
 import type { AxiosError, AxiosResponse } from "axios";
 import { viewCamps } from "../../api/camp.api";
+import { getRoleFromToken } from "../../utils/jwt.utils";
+import { useNavigate } from "react-router";
 
 const ViewAllCamps = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCamp, setSelectedCamp] = useState<Camp | null>(null);
   const [showAllCamps, setShowAllCamps] = useState(true);
+  const token = localStorage.getItem("token");
+  const role = getRoleFromToken(token!);
+  const navigate = useNavigate();
 
   const campListRef = useRef<HTMLDivElement>(null);
   const { data, isLoading, error } = useQuery<AxiosResponse<Camp[]>, AxiosError, Camp[]>({
@@ -80,13 +85,18 @@ const ViewAllCamps = () => {
             Access free medical checkups and essential healthcare services through dedicated heath camps.
           </p>
         </div>
-        <button
-          className="px-4 py-3 rounded-xl text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white font-medium flex items-center
-          shadow-md hover:shadow-lg transition-all duration-300 border-2 border-[var(--primary-color)] text-sm float-right mb-4"
-        >
-          <FaPlus className="mr-2" />
-          Add New Camp
-        </button>
+
+        {role === 'local_body' ? (
+            <button
+            onClick={() => navigate('/add-camp')}
+            className="px-4 py-3 rounded-xl text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white font-medium flex items-center
+            shadow-md hover:shadow-lg transition-all duration-300 border-2 border-[var(--primary-color)] text-sm float-right mb-4"
+          >
+            <FaPlus className="mr-2" />
+            Add New Camp
+          </button>
+
+        ): ('')}
 
         {/* Map at the top for mobile screens */}
           <div className="lg:hidden rounded-xl overflow-hidden shadow-md w-full h-100 mb-6">
